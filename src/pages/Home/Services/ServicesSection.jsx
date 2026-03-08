@@ -3,15 +3,13 @@ import { services } from "./servicesData";
 
 const ServicesSection = () => {
   return (
-    <section className="py-16 bg-base-200">
+    <section className="py-16 rounded-4xl bg-base-200">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* Section Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold">Our Services</h2>
-          <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-            We provide fast, reliable, and secure delivery solutions across
-            Bangladesh to support your business growth.
+          <p className="text-gray-500 mt-3 max-w-xl mx-auto">Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.
           </p>
         </div>
 

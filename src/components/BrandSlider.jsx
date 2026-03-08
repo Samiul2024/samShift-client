@@ -20,16 +20,12 @@ const logos = [
 
 export default function BrandSlider() {
   return (
-    <section className="py-16 bg-base-200">
+    <section className="py-8 rounded-4xl my-2 bg-base-200">
 
       {/* Section Title */}
       <div className="text-center mb-10">
         <h2 className="text-3xl font-bold">
-          Trusted by Industry Leaders
-        </h2>
-        <p className="text-gray-500 mt-2">
-          Companies that rely on our services
-        </p>
+          We've helped thousands of sales teams        </h2>
       </div>
 
       {/* Logo Marquee */}

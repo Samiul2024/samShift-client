@@ -28,7 +28,7 @@ export default function Benefits() {
     ];
 
     return (
-        <div className="py-16 space-y-6 px-4 md:px-8 lg:px-0 max-w-6xl mx-auto">
+        <div className="py-16 bg-base-200 space-y-6 my-2 rounded-2xl px-4 md:px-8 lg:px-0  mx-auto">
             <div className="text-center mb-10">
 
                 <h2 className="text-3xl font-bold">
