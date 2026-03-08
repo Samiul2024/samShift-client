@@ -3,7 +3,7 @@ import { services } from "./servicesData";
 
 const ServicesSection = () => {
   return (
-    <section className="py-16 rounded-4xl bg-base-200">
+    <section className="py-16  rounded-4xl bg-[#03373D]">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* Section Title */}
