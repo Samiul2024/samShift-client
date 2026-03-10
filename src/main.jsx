@@ -7,7 +7,7 @@ import {
 import { router } from './router/router.jsx';
 import 'aos/dist/aos.css';
 import AOS from 'aos';
-import AuthProvider from './firebase/AuthProvider.jsx';
+import AuthProvider from './contexts/AuthContext/AuthProvider.jsx';
 
 AOS.init();
 
