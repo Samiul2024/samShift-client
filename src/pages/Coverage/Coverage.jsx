@@ -1,7 +1,10 @@
 import React from 'react';
 import CoverageMap from './CoverageMap';
+import { useLoaderData } from 'react-router';
 
 const Coverage = () => {
+    const serviceCentres = useLoaderData();
+    // console.log(serviceCentres);
     return (
         <div className="max-w-7xl mx-auto py-16 px-4">
 
@@ -11,7 +14,7 @@ const Coverage = () => {
             </h1>
 
             {/* Map */}
-            <CoverageMap />
+            <CoverageMap serviceCentres={serviceCentres}/>
 
         </div>
     );

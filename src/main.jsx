@@ -8,6 +8,7 @@ import { router } from './router/router.jsx';
 import 'aos/dist/aos.css';
 import AOS from 'aos';
 import AuthProvider from './contexts/AuthContext/AuthProvider.jsx';
+import 'leaflet/dist/leaflet.css';
 
 AOS.init();
 
@@ -16,7 +17,9 @@ createRoot(document.getElementById('root')).render(
     <div className='font-urbanist max-w-7xl mx-auto'>
 
       <AuthProvider>
-        <RouterProvider router={router} />
+        <RouterProvider router={router}
+          fallbackElement={<p>Loading...</p>}
+        />
       </AuthProvider>
     </div>
   </StrictMode>,
