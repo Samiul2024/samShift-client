@@ -9,6 +9,7 @@ import Register from "../pages/Authentication/Register/Register";
 import Coverage from "../pages/Coverage/Coverage";
 import PrivateRoute from "../routes/PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
+import RiderApplication from "../components/RiderApplication";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
                         <SendParcel />
                     </PrivateRoute>
                 )
+            },
+            {
+                path: "BeARider",
+                Component: RiderApplication
             }
         ]
     },

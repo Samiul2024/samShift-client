@@ -8,6 +8,7 @@ const Navbar = () => {
         <li><NavLink to="/sendParcel">Send A Percel</NavLink></li>
         <li><NavLink to="/coverage">Coverage</NavLink></li>
         <li><NavLink to="/about">About Us</NavLink></li>
+        <li><NavLink to="/bearider">Be A Rider</NavLink></li>
 
     </>
     return (<div className="navbar bg-base-100 shadow-sm">

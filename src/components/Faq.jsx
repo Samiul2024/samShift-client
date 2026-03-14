@@ -23,6 +23,16 @@ const Faq = () => {
                 <div className="collapse-title font-semibold">How do I update my profile information?</div>
                 <div className="collapse-content text-sm">Go to "My Account" settings and select "Edit Profile" to make changes.</div>
             </div>
+            {/* Button */}
+            <div className="flex justify-center mt-12 gap-3">
+                <button className="btn bg-lime-400 text-black border-none rounded-xl px-8">
+                    See More FAQ’s
+                </button>
+
+                <button className="btn btn-circle bg-gray-800 border-none text-lime-400 text-xl">
+                    →
+                </button>
+            </div>
         </div>
     );
 };
