@@ -10,6 +10,7 @@ import Coverage from "../pages/Coverage/Coverage";
 import PrivateRoute from "../routes/PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
 import RiderApplication from "../components/RiderApplication";
+import AboutUs from "../pages/AboutUs/AboutUs";
 
 export const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
             {
                 path: "BeARider",
                 Component: RiderApplication
+            },
+            {
+                path: "About",
+                Component: AboutUs
             }
         ]
     },
