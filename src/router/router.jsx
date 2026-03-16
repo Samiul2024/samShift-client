@@ -11,6 +11,7 @@ import PrivateRoute from "../routes/PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
 import RiderApplication from "../components/RiderApplication";
 import AboutUs from "../pages/AboutUs/AboutUs";
+import PricingCalculator from "../components/PricingCalculator";
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
             {
                 path: "About",
                 Component: AboutUs
+            },
+            {
+                path: "PricingCalculator",
+                Component: PricingCalculator
             }
         ]
     },
