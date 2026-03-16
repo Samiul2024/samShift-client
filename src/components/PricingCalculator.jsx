@@ -66,7 +66,7 @@ const PricingCalculator = () => {
                             {...register("parcelType")}
                             className="select select-bordered w-full"
                         >
-                            <option value="">Select Parcel type</option>
+                            {/* <option value="">Select Parcel type</option> */}
                             <option value="document">Document</option>
                             <option value="package">Package</option>
                         </select>
@@ -82,7 +82,7 @@ const PricingCalculator = () => {
                             {...register("destination")}
                             className="select select-bordered w-full"
                         >
-                            <option value="">Select Delivery Destination</option>
+                            {/* <option value="">Select Delivery Destination</option> */}
                             <option value="inside">Inside City</option>
                             <option value="outside">Outside City</option>
                         </select>
