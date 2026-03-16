@@ -12,6 +12,7 @@ import SendParcel from "../pages/SendParcel/SendParcel";
 import RiderApplication from "../components/RiderApplication";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import PricingCalculator from "../components/PricingCalculator";
+import TrackConsignment from "../components/TrackConsignment";
 
 export const router = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
             {
                 path: "PricingCalculator",
                 Component: PricingCalculator
+            },
+            {
+                path: "TrackConsignment",
+                Component: TrackConsignment
             }
         ]
     },
