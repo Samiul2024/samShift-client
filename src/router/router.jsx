@@ -14,6 +14,7 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import PricingCalculator from "../components/PricingCalculator";
 import TrackConsignment from "../components/TrackConsignment";
 import ErrorPage from "../components/ErrorPage";
+import ForgotPassword from "../pages/Authentication/ForgotPassword/ForgotPassword";
 
 export const router = createBrowserRouter([
     {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
             {
                 path: 'register',
                 Component: Register
+            },
+            {
+                path: 'forgot-password',
+                Component: ForgotPassword
             }
         ]
     }

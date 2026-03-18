@@ -44,7 +44,11 @@ const Register = () => {
                         }{
                             errors.password?.type === 'minLength' && <p className="text-red-500">Password must be 6 character or longer</p>
                         }
-                        <div><a className="link link-hover">Forgot password?</a></div>
+                        <div>
+                            <Link to="/forgot-password" className="link link-hover">
+                                Forgot password?
+                            </Link>
+                        </div>
                         <button className="btn btn-primary text-black mt-4">Register</button>
                     </fieldset>
                     <p><small>Already Have an account?
