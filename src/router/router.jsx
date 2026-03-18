@@ -15,6 +15,7 @@ import PricingCalculator from "../components/PricingCalculator";
 import TrackConsignment from "../components/TrackConsignment";
 import ErrorPage from "../components/ErrorPage";
 import ForgotPassword from "../pages/Authentication/ForgotPassword/ForgotPassword";
+import VerifyCode from "../pages/Authentication/ForgotPassword/VerifyCode";
 
 export const router = createBrowserRouter([
     {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
             {
                 path: 'forgot-password',
                 Component: ForgotPassword
+            },
+            {
+                path: '/verify-code',
+                Component: VerifyCode
             }
         ]
     }

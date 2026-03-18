@@ -9,6 +9,7 @@ import 'aos/dist/aos.css';
 import AOS from 'aos';
 import AuthProvider from './contexts/AuthContext/AuthProvider.jsx';
 import 'leaflet/dist/leaflet.css';
+import { Toaster } from 'react-hot-toast';
 
 AOS.init();
 
@@ -17,6 +18,8 @@ createRoot(document.getElementById('root')).render(
     <div className='font-urbanist max-w-7xl mx-auto'>
 
       <AuthProvider>
+        <Toaster position="top-right" reverseOrder={false} />
+
         <RouterProvider router={router}
           fallbackElement={<p>Loading...</p>}
         />

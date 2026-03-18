@@ -1,26 +1,34 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import toast from 'react-hot-toast';
 
 const ForgotPassword = () => {
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const { resetPassword } = useAuth(); // you need to add this in AuthContext
+    const { resetPassword } = useAuth();
+    const navigate = useNavigate(); // ✅ correct navigation hook
 
-    const onSubmit = data => {
+    const onSubmit = async (data) => {
         const { email } = data;
 
-        resetPassword(email)
-            .then(() => {
-                toast.success("Password reset email sent ✅");
-                reset();
-            })
-            .catch(error => {
-                console.log(error);
-                toast.error(error.message);
-            });
+        try {
+            await resetPassword(email);
+
+            toast.success("Password reset email sent ✅");
+
+            reset();
+
+            // ⏳ small delay so user can see toast
+            setTimeout(() => {
+                navigate('/verify-code'); // ✅ correct navigation
+            }, 1500);
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
     };
 
     return (
