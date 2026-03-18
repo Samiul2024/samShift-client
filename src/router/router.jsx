@@ -13,11 +13,13 @@ import RiderApplication from "../components/RiderApplication";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import PricingCalculator from "../components/PricingCalculator";
 import TrackConsignment from "../components/TrackConsignment";
+import ErrorPage from "../components/ErrorPage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         Component: RootLayout,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,

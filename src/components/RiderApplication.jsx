@@ -164,7 +164,7 @@ const RiderApplication = () => {
                 {/* RIGHT SIDE IMAGE */}
                 <div className="hidden lg:flex justify-center">
                     <img
-                        src="https://i.ibb.co/0y7n7x3/delivery-rider.png"
+                        src="https://i.ibb.co.com/j9yqszhf/agent-pending.png"
                         alt="rider"
                         className="max-h-[450px]"
                     />
