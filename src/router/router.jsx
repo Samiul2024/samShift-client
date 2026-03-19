@@ -16,6 +16,7 @@ import TrackConsignment from "../components/TrackConsignment";
 import ErrorPage from "../components/ErrorPage";
 import ForgotPassword from "../pages/Authentication/ForgotPassword/ForgotPassword";
 import VerifyCode from "../pages/Authentication/ForgotPassword/VerifyCode";
+import ResetPassword from "../pages/Authentication/ForgotPassword/ResetPassword ";
 
 export const router = createBrowserRouter([
     {
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
             {
                 path: '/verify-code',
                 Component: VerifyCode
+            },
+            {
+                path: "/reset-password",
+                Component: ResetPassword
             }
         ]
     }
