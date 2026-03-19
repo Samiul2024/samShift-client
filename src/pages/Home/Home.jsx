@@ -7,6 +7,7 @@ import BeMerchant from '../../components/BeMerchant';
 import Faq from '../../components/Faq';
 import HowItWorks from '../../components/HowItWorks';
 import Testimonials from '../../components/Testimonials';
+import HowEarningWorks from '../../components/HowEarningWorks';
 
 const Home = () => {
     return (
@@ -19,6 +20,8 @@ const Home = () => {
             <BeMerchant />
             <Testimonials />
             <Faq />
+            <HowEarningWorks />
+
         </div>
     );
 };
