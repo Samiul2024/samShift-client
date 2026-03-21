@@ -1,47 +1,5 @@
 import React from "react";
-
-const agents = [
-  {
-    name: "Devon Lane",
-    location: "Naperville",
-    image: "https://i.pravatar.cc/300?img=1",
-  },
-  {
-    name: "Jane Cooper",
-    location: "Fairfield",
-    image: "https://i.pravatar.cc/300?img=2",
-  },
-  {
-    name: "Savannah Nguyen",
-    location: "Pembroke Pines",
-    image: "https://i.pravatar.cc/300?img=3",
-  },
-  {
-    name: "Darrell Steward",
-    location: "Orange",
-    image: "https://i.pravatar.cc/300?img=4",
-  },
-  {
-    name: "Devon Lane",
-    location: "Naperville",
-    image: "https://i.pravatar.cc/300?img=5",
-  },
-  {
-    name: "Jane Cooper",
-    location: "Fairfield",
-    image: "https://i.pravatar.cc/300?img=6",
-  },
-  {
-    name: "Savannah Nguyen",
-    location: "Pembroke Pines",
-    image: "https://i.pravatar.cc/300?img=7",
-  },
-  {
-    name: "Darrell Steward",
-    location: "Orange",
-    image: "https://i.pravatar.cc/300?img=8",
-  },
-];
+import agents from "../data/agents.json"; // adjust path
 
 const TopAgents = () => {
   return (
@@ -51,9 +9,9 @@ const TopAgents = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {agents.map((agent, index) => (
+        {agents.map((agent) => (
           <div
-            key={index}
+            key={agent.id}
             className="card bg-base-100 shadow-xl rounded-2xl overflow-hidden"
           >
             <figure className="p-4">
