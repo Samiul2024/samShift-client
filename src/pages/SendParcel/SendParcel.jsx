@@ -33,8 +33,9 @@ const SendParcel = ({ user }) => {
         districtsData.find((d) => d.district === receiverDistrict)?.covered_area || [];
 
     // ---------------- COST CALCULATION ----------------
+
     useEffect(() => {
-        if (!parcelType) return;
+        if (!parcelType || !senderDistrict || !receiverDistrict) return;
 
         let deliveryCost = 0;
         const insideDistrict = senderDistrict === receiverDistrict;
@@ -43,10 +44,17 @@ const SendParcel = ({ user }) => {
             deliveryCost = insideDistrict ? 60 : 80;
         } else {
             const w = parseFloat(weight) || 0;
-            if (insideDistrict) {
-                deliveryCost = w <= 3 ? 110 : 110 + (w - 3) * 40;
+
+            if (w <= 3) {
+                deliveryCost = insideDistrict ? 110 : 150;
             } else {
-                deliveryCost = w <= 3 ? 150 : 150 + (w - 3) * 40;
+                const extraWeight = w - 3;
+
+                if (insideDistrict) {
+                    deliveryCost = 110 + extraWeight * 40;
+                } else {
+                    deliveryCost = 150 + extraWeight * 40 + 40; 
+                }
             }
         }
 
@@ -59,7 +67,7 @@ const SendParcel = ({ user }) => {
             <div className="space-y-3">
                 <p className="font-semibold text-lg">Delivery Cost: {cost} BDT</p>
                 <button
-                    className="btn btn-success btn-sm"
+                    className="btn btn-success text-black btn-sm"
                     onClick={() => confirmSubmission(data, t.id)}
                 >
                     Confirm Parcel
