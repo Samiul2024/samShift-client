@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const SendParcel = ({ user }) => {
     const districtsData = useLoaderData();
@@ -9,7 +9,7 @@ const SendParcel = ({ user }) => {
 
     const [cost, setCost] = useState(0);
 
-    // ---------------- WATCH FORM VALUES ----------------
+    // ---------------- WATCH ----------------
     const parcelType = watch("type");
     const weight = watch("weight");
 
@@ -19,7 +19,7 @@ const SendParcel = ({ user }) => {
     const receiverRegion = watch("receiverRegion");
     const receiverDistrict = watch("receiverDistrict");
 
-    // ---------------- REGION LIST ----------------
+    // ---------------- REGIONS ----------------
     const regions = [...new Set(districtsData.map((d) => d.region))];
 
     // ---------------- DISTRICTS ----------------
@@ -33,7 +33,6 @@ const SendParcel = ({ user }) => {
         districtsData.find((d) => d.district === receiverDistrict)?.covered_area || [];
 
     // ---------------- COST CALCULATION ----------------
-
     useEffect(() => {
         if (!parcelType || !senderDistrict || !receiverDistrict) return;
 
@@ -53,7 +52,7 @@ const SendParcel = ({ user }) => {
                 if (insideDistrict) {
                     deliveryCost = 110 + extraWeight * 40;
                 } else {
-                    deliveryCost = 150 + extraWeight * 40 + 40; 
+                    deliveryCost = 150 + extraWeight * 40 + 40;
                 }
             }
         }
@@ -63,21 +62,73 @@ const SendParcel = ({ user }) => {
 
     // ---------------- SUBMIT ----------------
     const onSubmit = (data) => {
-        toast((t) => (
-            <div className="space-y-3">
-                <p className="font-semibold text-lg">Delivery Cost: {cost} BDT</p>
-                <button
-                    className="btn btn-success text-black btn-sm"
-                    onClick={() => confirmSubmission(data, t.id)}
-                >
-                    Confirm Parcel
-                </button>
-            </div>
-        ), { duration: Infinity });
+        const insideDistrict = data.senderDistrict === data.receiverDistrict;
+        const w = parseFloat(data.weight) || 0;
+
+        let breakdown = "";
+        let base = 0;
+        let extra = 0;
+
+        if (data.type === "document") {
+            base = insideDistrict ? 60 : 80;
+
+            breakdown = `
+                <p>📄 <b>Parcel Type:</b> Document</p>
+                <p>📍 <b>Delivery:</b> ${insideDistrict ? "Inside District" : "Outside District"}</p>
+                <p>💰 <b>Base Cost:</b> ${base} BDT</p>
+            `;
+        } else {
+            if (w <= 3) {
+                base = insideDistrict ? 110 : 150;
+
+                breakdown = `
+                    <p>📦 <b>Parcel Type:</b> Non-Document</p>
+                    <p>⚖️ <b>Weight:</b> ${w} kg</p>
+                    <p>📍 <b>Delivery:</b> ${insideDistrict ? "Inside District" : "Outside District"}</p>
+                    <p>💰 <b>Base Cost (≤3kg):</b> ${base} BDT</p>
+                `;
+            } else {
+                const extraWeight = w - 3;
+                extra = extraWeight * 40;
+                base = insideDistrict ? 110 : 150;
+
+                breakdown = `
+                    <p>📦 <b>Parcel Type:</b> Non-Document</p>
+                    <p>⚖️ <b>Weight:</b> ${w} kg</p>
+                    <p>📍 <b>Delivery:</b> ${insideDistrict ? "Inside District" : "Outside District"}</p>
+                    <p>💰 <b>Base Cost (first 3kg):</b> ${base} BDT</p>
+                    <p>➕ <b>Extra Weight Charge:</b> ${extra} BDT</p>
+                    ${!insideDistrict ? `<p>🚚 <b>Outside District Charge:</b> 40 BDT</p>` : ""}
+                `;
+            }
+        }
+
+        Swal.fire({
+            title: "📦 Delivery Cost Breakdown",
+            html: `
+                <div style="text-align:left; line-height:1.8">
+                    ${breakdown}
+                    <hr/>
+                    <h2 style="color:#16a34a; text-align:center;">
+                        Total: ${cost} BDT
+                    </h2>
+                </div>
+            `,
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: "Proceed to Payment 💳",
+            cancelButtonText: "Edit Parcel ✏️",
+            confirmButtonColor: "#22c55e",
+            cancelButtonColor: "#ef4444",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                confirmSubmission(data);
+            }
+        });
     };
 
     // ---------------- FINAL CONFIRM ----------------
-    const confirmSubmission = (data, toastId) => {
+    const confirmSubmission = (data) => {
         const parcelData = {
             ...data,
             delivery_cost: cost,
@@ -86,21 +137,24 @@ const SendParcel = ({ user }) => {
 
         console.log("Parcel Data:", parcelData);
 
-        toast.dismiss(toastId);
-        toast.success("Parcel booked successfully!");
+        Swal.fire({
+            icon: "success",
+            title: "Parcel বুকিং সফল!",
+            text: "Proceeding to payment...",
+            timer: 2000,
+            showConfirmButton: false,
+        });
 
         reset();
     };
 
     return (
         <div className="max-w-7xl mx-auto p-6">
-            {/* Hot Toast Container */}
-            <Toaster position="top-center" />
-
-            {/* Heading */}
             <div className="text-center mb-10">
                 <h2 className="text-4xl font-bold">Send a Parcel</h2>
-                <p className="text-gray-500">Fill the form to schedule your parcel delivery</p>
+                <p className="text-gray-500">
+                    Fill the form to schedule your parcel delivery
+                </p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
