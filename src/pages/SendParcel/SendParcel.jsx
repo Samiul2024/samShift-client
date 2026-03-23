@@ -2,10 +2,19 @@ import { useLoaderData } from "react-router";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth";
+
+const generateTrackingID = () => {
+    const date = new Date();
+    const datePart = date.toISOString().split("T")[0].replace(/-/g, "");
+    const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
+    return `PCL-${datePart}` - ${ rand }
+};
 
 const SendParcel = ({ user }) => {
     const districtsData = useLoaderData();
     const { register, handleSubmit, watch, reset } = useForm();
+    const { user } = useAuth()
 
     const [cost, setCost] = useState(0);
 
@@ -140,7 +149,11 @@ const SendParcel = ({ user }) => {
         const parcelData = {
             ...data,
             delivery_cost: cost,
-            creation_date: new Date(),
+            created_by: user.email,
+            payment_status='unpaid',
+            delivery_status: "not-collected",
+            creation_date: new Date().toISOString(),
+            tracking_id: generateTrackingID(),
         };
 
         console.log("Parcel Data:", parcelData);
