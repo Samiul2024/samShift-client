@@ -89,17 +89,25 @@ const SendParcel = ({ user }) => {
                 `;
             } else {
                 const extraWeight = w - 3;
-                extra = extraWeight * 40;
+                const perKgRate = 40;
+                extra = extraWeight * perKgRate;
                 base = insideDistrict ? 110 : 150;
 
                 breakdown = `
-                    <p>📦 <b>Parcel Type:</b> Non-Document</p>
-                    <p>⚖️ <b>Weight:</b> ${w} kg</p>
-                    <p>📍 <b>Delivery:</b> ${insideDistrict ? "Inside District" : "Outside District"}</p>
-                    <p>💰 <b>Base Cost (first 3kg):</b> ${base} BDT</p>
-                    <p>➕ <b>Extra Weight Charge:</b> ${extra} BDT</p>
-                    ${!insideDistrict ? `<p>🚚 <b>Outside District Charge:</b> 40 BDT</p>` : ""}
-                `;
+    <p>📦 <b>Parcel Type:</b> Non-Document</p>
+    <p>⚖️ <b>Total Weight:</b> ${w} kg</p>
+    <p>📍 <b>Delivery:</b> ${insideDistrict ? "Inside District" : "Outside District"}</p>
+
+    <hr/>
+
+    <p>💰 <b>Base Cost (First 3kg):</b> ${base} BDT</p>
+
+    <p>➕ <b>Extra Weight:</b> ${extraWeight.toFixed(2)} kg</p>
+    <p>➕ <b>Rate:</b> ${perKgRate} BDT per kg</p>
+    <p>➕ <b>Extra Cost:</b> ${extraWeight.toFixed(2)} × ${perKgRate} = ${extra} BDT</p>
+
+    ${!insideDistrict ? `<p>🚚 <b>Outside District Charge:</b> 40 BDT</p>` : ""}
+`;
             }
         }
 
