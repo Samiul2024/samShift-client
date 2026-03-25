@@ -17,6 +17,7 @@ import ErrorPage from "../components/ErrorPage";
 import ForgotPassword from "../pages/Authentication/ForgotPassword/ForgotPassword";
 import VerifyCode from "../pages/Authentication/ForgotPassword/VerifyCode";
 import ResetPassword from "../pages/Authentication/ForgotPassword/ResetPassword ";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
     {
@@ -85,6 +86,15 @@ export const router = createBrowserRouter([
                 path: "/reset-password",
                 Component: ResetPassword
             }
+        ]
+    },
+    {
+        path: '/dashboard',
+        element: <PrivateRoute>
+            <DashboardLayout></DashboardLayout>
+        </PrivateRoute>,
+        children: [
+
         ]
     }
 ]);

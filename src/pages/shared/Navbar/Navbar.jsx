@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router'; // make sure to import from 'react-router-dom'
 import ProFastLogo from '../ProFastLogo/ProFastLogo';
+import useAuth from '../../../hooks/useAuth';
 
 const Navbar = () => {
+    const { user } = useAuth();
     // Function to apply active styles
     const activeClass = ({ isActive }) =>
         isActive ? 'rounded-3xl bg-[#CAEB66] font-bold' : 'text-gray-700';
@@ -24,6 +26,17 @@ const Navbar = () => {
                     Coverage
                 </NavLink>
             </li>
+
+            {
+                user && <>
+                    <li>
+                        <NavLink to="/dashboard" className={activeClass}>
+                            DashBoard
+                        </NavLink>
+                    </li>
+                </>
+            }
+
             <li>
                 <NavLink to="/about" className={activeClass}>
                     About Us
