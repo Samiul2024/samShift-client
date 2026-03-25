@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const generateTrackingID = () => {
     const date = new Date();
@@ -15,6 +16,7 @@ const SendParcel = () => {
     const districtsData = useLoaderData();
     const { register, handleSubmit, watch, reset } = useForm();
     const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
 
     const [cost, setCost] = useState(0);
 
@@ -157,19 +159,25 @@ const SendParcel = () => {
         };
 
         console.log("Parcel Data:", parcelData);
-        // here redirect to a payment page or trigger a payment modal
 
+        axiosSecure.post('/parcels', parcelData)
+            .then(res => {
+                console.log(res.data);
+                if (res.data.insertedId) {
+
+                    //TODO: redirect to a payment page 
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Redirecting...",
+                        text: "Proceeding to payment gateway...",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+                }
+            })
         // save data to the server
-
-        Swal.fire({
-            icon: "success",
-            title: "Parcel বুকিং সফল!",
-            text: "Proceeding to payment...",
-            timer: 2000,
-            showConfirmButton: false,
-        });
-
-        reset();
+        // reset();
     };
 
     return (
