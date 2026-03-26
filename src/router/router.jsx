@@ -18,6 +18,7 @@ import ForgotPassword from "../pages/Authentication/ForgotPassword/ForgotPasswor
 import VerifyCode from "../pages/Authentication/ForgotPassword/VerifyCode";
 import ResetPassword from "../pages/Authentication/ForgotPassword/ResetPassword ";
 import DashboardLayout from "../layouts/DashboardLayout";
+import MyParcels from "../pages/Dashboard/MyParcels/MyParcels";
 
 export const router = createBrowserRouter([
     {
@@ -94,7 +95,10 @@ export const router = createBrowserRouter([
             <DashboardLayout></DashboardLayout>
         </PrivateRoute>,
         children: [
-
+            {
+                path: 'myParcels',
+                Component: MyParcels
+            }
         ]
     }
 ]);
