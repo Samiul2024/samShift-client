@@ -151,7 +151,7 @@ const SendParcel = () => {
         const parcelData = {
             ...data,
             delivery_cost: cost,
-            created_by: user.email,
+            created_by: user?.email,
             payment_status: 'unpaid',
             delivery_status: "not-collected",
             creation_date: new Date().toISOString(),
