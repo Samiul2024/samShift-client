@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const MyParcels = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const { data: parcels = [] } = useQuery({
+    const { data: parcels = [], refetch } = useQuery({
         queryKey: ['my-parcels', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user.email}`);
@@ -28,7 +28,7 @@ const MyParcels = () => {
             if (result.isConfirmed) {
                 await axiosSecure.delete(`/parcels/${id}`);
                 Swal.fire("Deleted!", "Parcel removed.", "success");
-                // refetch();
+                refetch();
             }
         });
     };
@@ -64,6 +64,7 @@ const MyParcels = () => {
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Title</th>
                             <th>Type</th>
                             <th>Created At</th>
                             <th>Cost</th>
@@ -76,6 +77,10 @@ const MyParcels = () => {
                         {parcels.map((parcel, index) => (
                             <tr key={parcel._id}>
                                 <td>{index + 1}</td>
+                                {/* ✅ TITLE */}
+                                <td className="font-medium">
+                                    {parcel.title}
+                                </td>
 
                                 {/* TYPE */}
                                 <td className="capitalize">
