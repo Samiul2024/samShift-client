@@ -14,7 +14,7 @@ const generateTrackingID = () => {
 
 const SendParcel = () => {
     const districtsData = useLoaderData();
-    const { register, handleSubmit, watch, reset } = useForm();
+    const { register, handleSubmit, watch } = useForm();
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
 
