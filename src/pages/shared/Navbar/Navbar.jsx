@@ -4,7 +4,14 @@ import ProFastLogo from '../ProFastLogo/ProFastLogo';
 import useAuth from '../../../hooks/useAuth';
 
 const Navbar = () => {
-    const { user } = useAuth();
+    const { user, logOut } = useAuth();
+
+    const handleLogOut = () => {
+        logOut()
+            .then(result => { console.log(result) })
+            .catch(error => console.log(error))
+    }
+
     // Function to apply active styles
     const activeClass = ({ isActive }) =>
         isActive ? 'rounded-3xl bg-[#CAEB66] font-bold' : 'text-gray-700';
@@ -100,9 +107,12 @@ const Navbar = () => {
             </div>
 
             <div className="navbar-end">
-                <Link className="btn btn-primary" to="/login">
-                    Login
-                </Link>
+                {user ?
+                    <button onClick={handleLogOut} className='btn btn-primary text-black'>Log Out</button>
+                    :
+                    <Link className="btn btn-primary" to="/login">
+                        Login
+                    </Link>}
             </div>
         </div>
     );
