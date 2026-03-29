@@ -3,10 +3,12 @@ import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 const MyParcels = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
     const { data: parcels = [], refetch } = useQuery({
         queryKey: ['my-parcels', user?.email],
         queryFn: async () => {
@@ -36,6 +38,7 @@ const MyParcels = () => {
     // 💳 PAY (dummy for now)
     const handlePay = (parcel) => {
         Swal.fire("Payment", `Proceed to pay ${parcel.delivery_cost} BDT`, "info");
+        navigate(`/dashboard/payment/${parcel}`);
     };
 
     // 👁️ VIEW DETAILS
@@ -118,7 +121,7 @@ const MyParcels = () => {
 
                                     {parcel.payment_status === "unpaid" && (
                                         <button
-                                            onClick={() => handlePay(parcel)}
+                                            onClick={() => handlePay(parcel._id)}
                                             className="btn btn-xs btn-success"
                                         >
                                             Pay
