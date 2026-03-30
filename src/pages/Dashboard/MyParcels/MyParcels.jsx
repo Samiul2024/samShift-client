@@ -16,9 +16,9 @@ const MyParcels = () => {
             return res.data;
         }
     })
-    console.log(parcels);
+    // console.log(parcels);
 
-    // 🗑️ DELETE
+    //  DELETE
     const handleDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -35,13 +35,13 @@ const MyParcels = () => {
         });
     };
 
-    // 💳 PAY (dummy for now)
+    //  PAY (dummy for now)
     const handlePay = (parcel) => {
         Swal.fire("Payment", `Proceed to pay ${parcel.delivery_cost} BDT`, "info");
         navigate(`/dashboard/payment/${parcel}`);
     };
 
-    // 👁️ VIEW DETAILS
+    //  VIEW DETAILS
     const handleView = (parcel) => {
         Swal.fire({
             title: "Parcel Details",
