@@ -1,15 +1,17 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const { parcelId } = useParams();
     const { user } = useAuth();
+    const navigate = useNavigate();
     console.log(parcelId);
 
     const [error, setError] = useState('');
@@ -83,8 +85,34 @@ const PaymentForm = () => {
                 setError('');
                 if (result.paymentIntent.status === 'succeeded') {
                     console.log('Payment succeeded!');
-                    console.log(result);
+                    // console.log(result);
+                    const transactionId = result.paymentIntent.id;
                     // step-4: mark parcel paid also create payment history
+                    const paymentData = {
+                        parcelId,
+                        email: user.email,
+                        amount,
+                        transactionId: transactionId,
+                        paymentMethod: result.paymentIntent.payment_method_types
+                    }
+
+                    const paymentRes = await axiosSecure.post('/payments', paymentData);
+                    if (paymentRes.data.insertedId) {
+
+                        await Swal.fire({
+                            title: "Payment Successful 🎉",
+                            html: `
+            <p>Your parcel payment has been completed successfully.</p>
+            <p><strong>Transaction ID:</strong> ${transactionId}</p>
+        `,
+                            icon: "success",
+                            confirmButtonText: "Go to My Parcels",
+                            confirmButtonColor: "#16a34a",
+                        });
+
+                        navigate("/dashboard/myParcels");
+                    }
+
                 }
             }
         }
