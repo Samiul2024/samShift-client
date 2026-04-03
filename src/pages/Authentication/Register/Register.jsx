@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createUser } = useAuth();
+    const { createUser, updateUserProfile } = useAuth();
     const [profilePic, setProfilePic] = useState('');
 
     const onSubmit = data => {
@@ -19,7 +19,17 @@ const Register = () => {
                 //update user info in the database
 
                 //update user profile in firebase
-
+                const userProfile = {
+                    displayName: data.name,
+                    photoURL: profilePic
+                }
+                updateUserProfile(userProfile)
+                    .then(() => {
+                        console.log('profile name ,picture updated');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
 
 
             })
