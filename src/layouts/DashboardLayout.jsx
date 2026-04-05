@@ -6,7 +6,9 @@ import {
     HiOutlineCube,
     HiOutlineCreditCard,
     HiOutlineTruck,
-    HiOutlineUser
+    HiOutlineUser,
+    HiOutlineUserGroup,
+    HiOutlineClock
 } from "react-icons/hi";
 
 const DashboardLayout = () => {
@@ -75,6 +77,21 @@ const DashboardLayout = () => {
                         <NavLink to="/dashboard/profile" className="flex items-center gap-2">
                             <HiOutlineUser className="text-lg" />
                             Update Profile
+                        </NavLink>
+                    </li>
+
+                    {/* Riders link */}
+                    <li>
+                        <NavLink to="/dashboard/activeRiders" className="flex items-center gap-2">
+                            <HiOutlineUserGroup className="text-lg" />
+                            Active Riders
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/dashboard/pendingRiders" className="flex items-center gap-2">
+                            <HiOutlineClock className="text-lg" />
+                            Pending Riders
                         </NavLink>
                     </li>
                 </ul>

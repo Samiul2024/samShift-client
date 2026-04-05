@@ -44,18 +44,19 @@ const BeARider = () => {
             applied_at: new Date().toISOString(),
         };
 
-        console.log("Rider আবেদন:", riderData);
+        console.log("Rider Application:", riderData);
 
         axiosSecure.post("/riders", riderData)
             .then(res => {
                 if (res.data.insertedId) {
+                    // console.log(res.data.insertedId );
                     Swal.fire({
                         icon: "success",
                         title: "Application Submitted!",
                         text: "Your rider application is under review.",
                         confirmButtonColor: "#22c55e",
                     });
-                    reset();
+                    // reset();
                 }
             })
             .catch(err => {
