@@ -9,7 +9,6 @@ import Register from "../pages/Authentication/Register/Register";
 import Coverage from "../pages/Coverage/Coverage";
 import PrivateRoute from "../routes/PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
-import RiderApplication from "../components/RiderApplication";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import PricingCalculator from "../components/PricingCalculator";
 import TrackConsignment from "../components/TrackConsignment";
@@ -22,6 +21,7 @@ import MyParcels from "../pages/Dashboard/MyParcels/MyParcels";
 import Payment from "../pages/Dashboard/Payment/PAyment";
 import PaymentHistory from "../pages/Dashboard/Payment/PaymentHistory/PaymentHistory";
 import TrackParcel from "../pages/Dashboard/TrackParcel/TrackParcel";
+import BeARider from "../components/BeARider";
 
 export const router = createBrowserRouter([
     {
@@ -36,12 +36,12 @@ export const router = createBrowserRouter([
             {
                 path: 'coverage',
                 Component: Coverage,
-                loader: () => fetch('/districts.json')
+                loader: () => fetch('/coverageData.json')
 
             },
             {
                 path: "sendParcel",
-                loader: () => fetch("/districts.json"),
+                loader: () => fetch("/coverageData.json"),
                 element: (
                     <PrivateRoute>
                         <SendParcel />
@@ -50,7 +50,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: "BeARider",
-                Component: RiderApplication
+                element: <PrivateRoute><BeARider></BeARider></PrivateRoute>,
+                loader: () => fetch("/coverageData.json")
             },
             {
                 path: "About",
