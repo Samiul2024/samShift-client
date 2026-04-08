@@ -15,12 +15,11 @@ const PendingRiders = () => {
             return res.data;
         },
     });
-    if (isPending) {
-        return '...loading'
-    }
+
+    if (isPending) return <p>Loading...</p>;
 
     // ✅ Approve Rider
-    const handleApprove = (id) => {
+    const handleApprove = (id, email) => {
         Swal.fire({
             title: "Approve Rider?",
             icon: "question",
@@ -28,7 +27,10 @@ const PendingRiders = () => {
             confirmButtonText: "Yes, Approve",
         }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.patch(`/riders/${id}`, { status: "approved" })
+                axiosSecure.patch(`/riders/${id}`, {
+                    status: "approved",
+                    email: email, // ✅ correct
+                })
                     .then(() => {
                         Swal.fire("Approved!", "Rider is now active.", "success");
                         refetch();
@@ -38,7 +40,7 @@ const PendingRiders = () => {
     };
 
     // ❌ Reject Rider
-    const handleReject = (id) => {
+    const handleReject = (id, email) => {
         Swal.fire({
             title: "Reject Application?",
             icon: "warning",
@@ -46,7 +48,10 @@ const PendingRiders = () => {
             confirmButtonText: "Yes, Reject",
         }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.patch(`/riders/${id}`, { status: "rejected" })
+                axiosSecure.patch(`/riders/${id}`, {
+                    status: "inactive",
+                    email: email, // ✅ correct
+                })
                     .then(() => {
                         Swal.fire("Rejected!", "Application rejected.", "success");
                         refetch();
@@ -54,8 +59,6 @@ const PendingRiders = () => {
             }
         });
     };
-
-    if (isPending) return <p>Loading...</p>;
 
     return (
         <div className="p-6 bg-white rounded-xl shadow-md">
@@ -96,7 +99,7 @@ const PendingRiders = () => {
                                     {/* Approve */}
                                     <button
                                         className="btn btn-sm btn-success"
-                                        onClick={() => handleApprove(rider._id)}
+                                        onClick={() => handleApprove(rider._id, rider.email)}
                                     >
                                         Approve
                                     </button>
@@ -104,7 +107,7 @@ const PendingRiders = () => {
                                     {/* Reject */}
                                     <button
                                         className="btn btn-sm btn-error"
-                                        onClick={() => handleReject(rider._id)}
+                                        onClick={() => handleReject(rider._id, rider.email)}
                                     >
                                         Reject
                                     </button>
@@ -134,7 +137,10 @@ const PendingRiders = () => {
                             <p><b>License:</b> {selectedRider.license}</p>
                             <p><b>Bike:</b> {selectedRider.bike}</p>
                             <p><b>Bike Reg:</b> {selectedRider.bikeReg}</p>
-                            <p><b>Applied At:</b> {new Date(selectedRider.applied_at).toLocaleString()}</p>
+                            <p>
+                                <b>Applied At:</b>{" "}
+                                {new Date(selectedRider.applied_at).toLocaleString()}
+                            </p>
                             <p><b>About:</b> {selectedRider.about}</p>
                         </div>
 
@@ -150,7 +156,7 @@ const PendingRiders = () => {
                             <button
                                 className="btn btn-success"
                                 onClick={() => {
-                                    handleApprove(selectedRider._id);
+                                    handleApprove(selectedRider._id, selectedRider.email);
                                     setSelectedRider(null);
                                 }}
                             >
@@ -160,7 +166,7 @@ const PendingRiders = () => {
                             <button
                                 className="btn btn-error"
                                 onClick={() => {
-                                    handleReject(selectedRider._id);
+                                    handleReject(selectedRider._id, selectedRider.email);
                                     setSelectedRider(null);
                                 }}
                             >

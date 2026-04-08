@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../../hooks/useAuth';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import axios from 'axios';
 import useAxios from '../../../hooks/useAxios';
@@ -11,6 +11,10 @@ const Register = () => {
     const { createUser, updateUserProfile } = useAuth();
     const [profilePic, setProfilePic] = useState('');
     const axiosInstance = useAxios();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from || '/';
+    // console.log(location);
 
     const onSubmit = data => {
         console.log(data);
@@ -39,6 +43,7 @@ const Register = () => {
                 updateUserProfile(userProfile)
                     .then(() => {
                         console.log('profile name ,picture updated');
+                        navigate(from);
                     })
                     .catch(error => {
                         console.log(error);
@@ -80,7 +85,7 @@ const Register = () => {
                             errors.email?.type === 'required' && <p className='text-red-500'>Name is required</p>
                         }
                         {/*Img field */}
-                        <label className="label">Your Name</label>
+                        <label className="label">Upload your Profile photo</label>
                         <input type="file"
                             onChange={handleImageUpload}
                             className="input" placeholder="Your Profile Picture" />
