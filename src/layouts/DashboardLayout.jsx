@@ -8,7 +8,8 @@ import {
     HiOutlineTruck,
     HiOutlineUser,
     HiOutlineUserGroup,
-    HiOutlineClock
+    HiOutlineClock,
+    HiOutlineShieldCheck
 } from "react-icons/hi";
 
 const DashboardLayout = () => {
@@ -92,6 +93,13 @@ const DashboardLayout = () => {
                         <NavLink to="/dashboard/pendingRiders" className="flex items-center gap-2">
                             <HiOutlineClock className="text-lg" />
                             Pending Riders
+                        </NavLink>
+                    </li>
+                    {/* admin links */}
+                    <li>
+                        <NavLink to="/dashboard/makeAdmin" className="flex items-center gap-2">
+                            <HiOutlineShieldCheck className="text-lg" />
+                            Make Admin
                         </NavLink>
                     </li>
                 </ul>
