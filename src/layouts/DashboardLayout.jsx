@@ -11,8 +11,13 @@ import {
     HiOutlineClock,
     HiOutlineShieldCheck
 } from "react-icons/hi";
+import useUserRole from '../hooks/useUserRole';
 
 const DashboardLayout = () => {
+
+    const { role, isLoading } = useUserRole();
+    console.log(role);
+
     return (
 
         <div className="drawer lg:drawer-open">
@@ -82,26 +87,30 @@ const DashboardLayout = () => {
                     </li>
 
                     {/* Riders link */}
-                    <li>
-                        <NavLink to="/dashboard/activeRiders" className="flex items-center gap-2">
-                            <HiOutlineUserGroup className="text-lg" />
-                            Active Riders
-                        </NavLink>
-                    </li>
+                    {!isLoading && role === 'admin' &&
+                        <>
+                            <li>
+                                <NavLink to="/dashboard/activeRiders" className="flex items-center gap-2">
+                                    <HiOutlineUserGroup className="text-lg" />
+                                    Active Riders
+                                </NavLink>
+                            </li>
 
-                    <li>
-                        <NavLink to="/dashboard/pendingRiders" className="flex items-center gap-2">
-                            <HiOutlineClock className="text-lg" />
-                            Pending Riders
-                        </NavLink>
-                    </li>
-                    {/* admin links */}
-                    <li>
-                        <NavLink to="/dashboard/makeAdmin" className="flex items-center gap-2">
-                            <HiOutlineShieldCheck className="text-lg" />
-                            Make Admin
-                        </NavLink>
-                    </li>
+                            <li>
+                                <NavLink to="/dashboard/pendingRiders" className="flex items-center gap-2">
+                                    <HiOutlineClock className="text-lg" />
+                                    Pending Riders
+                                </NavLink>
+                            </li>
+                            {/* admin links */}
+                            <li>
+                                <NavLink to="/dashboard/makeAdmin" className="flex items-center gap-2">
+                                    <HiOutlineShieldCheck className="text-lg" />
+                                    Make Admin
+                                </NavLink>
+                            </li>
+                        </>
+                    }
                 </ul>
             </div>
         </div >
