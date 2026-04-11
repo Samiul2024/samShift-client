@@ -63,7 +63,7 @@ const ActiveRiders = () => {
                     <thead className="bg-gray-100">
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
+                            <th>Profile</th>
                             <th>Email</th>
                             <th>Region</th>
                             <th>District</th>
@@ -77,7 +77,16 @@ const ActiveRiders = () => {
                         {filteredRiders.map((rider, index) => (
                             <tr key={rider._id}>
                                 <td>{index + 1}</td>
-                                <td>{rider.name}</td>
+                                <td>
+                                    <div className="flex items-center gap-3">
+                                        <img
+                                            src={rider.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                                            className="w-10 h-10 rounded-full"
+                                        />
+                                        <span>{rider.name}</span>
+                                    </div>
+                                </td>
+                                {/* <td>{rider.name}</td> */}
                                 <td className="text-xs">{rider.email}</td>
                                 <td>{rider.region}</td>
                                 <td>{rider.district}</td>
@@ -97,6 +106,7 @@ const ActiveRiders = () => {
                                         Deactivate
                                     </button>
                                 </td>
+
                             </tr>
                         ))}
                     </tbody>

@@ -70,6 +70,7 @@ const PendingRiders = () => {
                     <thead className="bg-gray-100">
                         <tr>
                             <th>#</th>
+                            <th>Profile</th>
                             <th>Name</th>
                             <th>Region</th>
                             <th>District</th>
@@ -82,7 +83,21 @@ const PendingRiders = () => {
                         {riders.map((rider, index) => (
                             <tr key={rider._id}>
                                 <td>{index + 1}</td>
-                                <td>{rider.name}</td>
+                                <td>
+                                    <div className="relative group w-12 h-12">
+                                        <img
+                                            src={rider.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                                            className="w-12 h-12 rounded-full object-cover cursor-pointer"
+                                        />
+
+                                        {/* 🔥 Hover Zoom */}
+                                        <img
+                                            src={rider.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                                            className="absolute hidden group-hover:block w-32 h-32 rounded-lg object-cover -top-12 left-10 z-50 shadow-xl border"
+                                        />
+                                    </div>
+                                </td>
+                                <td><span className="text-2xl font-bold">{rider.name}</span></td>
                                 <td>{rider.region}</td>
                                 <td>{rider.district}</td>
                                 <td>{rider.phone}</td>

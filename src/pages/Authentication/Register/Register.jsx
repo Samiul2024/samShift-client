@@ -25,10 +25,11 @@ const Register = () => {
                 //update user info in the database
                 const userInfo = {
                     email: data.email,
-                    role: 'user', //default role
+                    role: 'user',
                     created_at: new Date().toISOString(),
-                    last_log_in: new Date().toISOString()
-
+                    last_log_in: new Date().toISOString(),
+                    photoURL: profilePic,   // ✅ ADD THIS
+                    name: data.name         // ✅ ALSO ADD NAME (very useful)
                 }
 
                 const userRes = await axiosInstance.post('/users', userInfo);
@@ -68,6 +69,7 @@ const Register = () => {
 
         // console.log(res.data.data.url);
         setProfilePic(res.data.data.url);
+        // console.log(formData);
 
     }
     return (
