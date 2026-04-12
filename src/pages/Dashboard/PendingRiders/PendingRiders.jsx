@@ -90,7 +90,7 @@ const PendingRiders = () => {
                                             className="w-12 h-12 rounded-full object-cover cursor-pointer"
                                         />
 
-                                        {/* 🔥 Hover Zoom */}
+                                        {/*  Hover Zoom */}
                                         <img
                                             src={rider.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
                                             className="absolute hidden group-hover:block w-32 h-32 rounded-lg object-cover -top-12 left-10 z-50 shadow-xl border"
