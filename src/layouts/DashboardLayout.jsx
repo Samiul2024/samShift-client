@@ -9,7 +9,8 @@ import {
     HiOutlineUser,
     HiOutlineUserGroup,
     HiOutlineClock,
-    HiOutlineShieldCheck
+    HiOutlineShieldCheck,
+    HiOutlineClipboardList
 } from "react-icons/hi";
 import useUserRole from '../hooks/useUserRole';
 
@@ -95,7 +96,12 @@ const DashboardLayout = () => {
                                     Active Riders
                                 </NavLink>
                             </li>
-
+                            <li>
+                                <NavLink to="/dashboard/assign-rider" className="flex items-center gap-2">
+                                    <HiOutlineClipboardList className="text-lg" />
+                                    Assign Rider
+                                </NavLink>
+                            </li>
                             <li>
                                 <NavLink to="/dashboard/pendingRiders" className="flex items-center gap-2">
                                     <HiOutlineClock className="text-lg" />
