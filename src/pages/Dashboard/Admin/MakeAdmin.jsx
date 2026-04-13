@@ -1,18 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 const MakeAdmin = () => {
     const axiosSecure = useAxiosSecure();
+    const queryClient = useQueryClient();
+
     const [search, setSearch] = useState("");
-    const [users, setUsers] = useState([]);
+    const [debouncedSearch, setDebouncedSearch] = useState("");
 
-    // 🔍 Search user
-    const handleSearch = async () => {
-        if (!search) return;
+    // ✅ Debounce
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 400);
 
-        const res = await axiosSecure.get(`/users/search?query=${search}`);
-        setUsers(res.data);
+        return () => clearTimeout(timer);
+    }, [search]);
+
+    // ✅ Fetch users with TanStack Query
+    const { data: users = [], isLoading } = useQuery({
+        queryKey: ["users", debouncedSearch],
+        queryFn: async () => {
+            if (!debouncedSearch.trim()) return [];
+            const res = await axiosSecure.get(
+                `/users/search?query=${debouncedSearch}`
+            );
+            return res.data;
+        },
+        enabled: !!debouncedSearch,
+        keepPreviousData: true,
+        staleTime: 5000,
+    });
+
+    // ✅ Highlight function
+    const highlightText = (text, keyword) => {
+        if (!keyword) return text;
+
+        const parts = text.split(new RegExp(`(${keyword})`, "gi"));
+
+        return parts.map((part, i) =>
+            part.toLowerCase() === keyword.toLowerCase() ? (
+                <span key={i} className="bg-yellow-200 font-semibold">
+                    {part}
+                </span>
+            ) : (
+                part
+            )
+        );
     };
 
     // 👑 Make admin
@@ -21,13 +57,14 @@ const MakeAdmin = () => {
             title: "Make Admin?",
             icon: "question",
             showCancelButton: true,
-        }).then(result => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.patch(`/users/admin/${id}`)
-                    .then(() => {
-                        Swal.fire("Success!", "User is now admin", "success");
-                        handleSearch();
-                    });
+                axiosSecure.patch(`/users/admin/${id}`).then(() => {
+                    Swal.fire("Success!", "User is now admin", "success");
+
+                    // ✅ Refetch automatically
+                    queryClient.invalidateQueries(["users"]);
+                });
             }
         });
     };
@@ -38,12 +75,15 @@ const MakeAdmin = () => {
             title: "Remove Admin?",
             icon: "warning",
             showCancelButton: true,
-        }).then(result => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.patch(`/users/remove-admin/${id}`)
+                axiosSecure
+                    .patch(`/users/remove-admin/${id}`)
                     .then(() => {
                         Swal.fire("Removed!", "Admin removed", "success");
-                        handleSearch();
+
+                        // ✅ Refetch automatically
+                        queryClient.invalidateQueries(["users"]);
                     });
             }
         });
@@ -62,10 +102,10 @@ const MakeAdmin = () => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-                <button onClick={handleSearch} className="btn btn-primary">
-                    Search
-                </button>
             </div>
+
+            {/* ⏳ Loading */}
+            {isLoading && <p className="text-blue-500">Searching...</p>}
 
             {/* 📊 Table */}
             <div className="overflow-x-auto">
@@ -80,29 +120,49 @@ const MakeAdmin = () => {
                     </thead>
 
                     <tbody>
-                        {users.map(user => (
+                        {users.map((user) => (
                             <tr key={user._id}>
-                                <td>{user.email}</td>
+                                {/* ✨ Highlighted Email */}
                                 <td>
-                                    <span className={`badge ${user.role === "admin" ? "badge-success" : "badge-ghost"}`}>
+                                    {highlightText(
+                                        user.email,
+                                        debouncedSearch
+                                    )}
+                                </td>
+
+                                <td>
+                                    <span
+                                        className={`badge ${
+                                            user.role === "admin"
+                                                ? "badge-success"
+                                                : "badge-ghost"
+                                        }`}
+                                    >
                                         {user.role || "user"}
                                     </span>
                                 </td>
+
                                 <td>
-                                    {new Date(user.created_at).toLocaleString()}
+                                    {new Date(
+                                        user.created_at
+                                    ).toLocaleString()}
                                 </td>
 
                                 <td>
                                     {user.role === "admin" ? (
                                         <button
-                                            onClick={() => handleRemoveAdmin(user._id)}
+                                            onClick={() =>
+                                                handleRemoveAdmin(user._id)
+                                            }
                                             className="btn btn-sm btn-error"
                                         >
                                             Remove Admin
                                         </button>
                                     ) : (
                                         <button
-                                            onClick={() => handleMakeAdmin(user._id)}
+                                            onClick={() =>
+                                                handleMakeAdmin(user._id)
+                                            }
                                             className="btn btn-sm btn-success"
                                         >
                                             Make Admin
@@ -114,6 +174,13 @@ const MakeAdmin = () => {
                     </tbody>
                 </table>
             </div>
+
+            {/* ❗ Empty state */}
+            {!isLoading && users.length === 0 && debouncedSearch && (
+                <p className="text-gray-500 mt-4">
+                    No users found for "{debouncedSearch}"
+                </p>
+            )}
         </div>
     );
 };
