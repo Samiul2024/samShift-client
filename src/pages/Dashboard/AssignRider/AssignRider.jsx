@@ -20,11 +20,11 @@ const AssignRider = () => {
 
     // 🔥 Load riders based on selected parcel district
     const { data: riders = [] } = useQuery({
-        queryKey: ['ridersByDistrict', selectedParcel?.senderCenter],
+        queryKey: ['ridersByDistrict', selectedParcel?.senderDistrict],
         enabled: !!selectedParcel,
         queryFn: async () => {
             const res = await axiosSecure.get(
-                `/riders/by-district?district=${selectedParcel.senderCenter}`
+                `/riders/by-district?district=${selectedParcel.senderDistrict}`
             );
             return res.data;
         }
@@ -137,7 +137,7 @@ const AssignRider = () => {
                     <div className="bg-white p-6 rounded-xl w-[600px]">
 
                         <h3 className="text-xl font-bold mb-4">
-                            Assign Rider ({selectedParcel?.senderCenter})
+                            Assign Rider ({selectedParcel?.senderDistrict})
                         </h3>
 
                         {riders.length === 0 ? (
