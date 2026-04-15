@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const AssignRider = () => {
 
     const axiosSecure = useAxiosSecure();
+    const riderModalRef = useRef();
 
     const [selectedParcel, setSelectedParcel] = useState(null);
-    const [showModal, setShowModal] = useState(false);
 
     // 🔥 Load assignable parcels
-    const { data: parcels = [], isLoading } = useQuery({
+    const { data: parcels = [], isLoading, refetch } = useQuery({
         queryKey: ['assignableParcels'],
         queryFn: async () => {
             const res = await axiosSecure.get('/parcels/assignable');
@@ -18,7 +19,7 @@ const AssignRider = () => {
         }
     });
 
-    // 🔥 Load riders based on selected parcel district
+    // 🔥 Load riders by district (FIXED: use senderDistrict)
     const { data: riders = [] } = useQuery({
         queryKey: ['ridersByDistrict', selectedParcel?.senderDistrict],
         enabled: !!selectedParcel,
@@ -30,14 +31,41 @@ const AssignRider = () => {
         }
     });
 
+    // 🔥 Open Modal
     const handleOpenModal = (parcel) => {
         setSelectedParcel(parcel);
-        setShowModal(true);
+        riderModalRef.current.showModal();
     };
 
-    const handleCloseModal = () => {
-        setSelectedParcel(null);
-        setShowModal(false);
+    // 🔥 Assign Rider
+    const handleAssignRider = async (rider) => {
+        try {
+            await axiosSecure.patch(`/parcels/assign-rider/${selectedParcel._id}`, {
+                riderId: rider._id
+            });
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Rider Assigned!',
+                html: `
+                    <b>${rider.name}</b> assigned to <br/>
+                    <span style="color:green;">${selectedParcel.title}</span>
+                `,
+                confirmButtonColor: "#16a34a"
+            });
+
+            riderModalRef.current.close();
+            setSelectedParcel(null);
+            refetch();
+
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Assignment Failed',
+                text: 'Something went wrong!'
+            });
+        }
     };
 
     if (isLoading) {
@@ -55,13 +83,13 @@ const AssignRider = () => {
                             <th className="border">Sl</th>
                             <th className="border">Parcel ID</th>
                             <th className="border">Parcel Title</th>
-                            <th className="border">Parcel type</th>
+                            <th className="border">Type</th>
                             <th className="border">Sender</th>
                             <th className="border">Receiver</th>
                             <th className="border">Route</th>
                             <th className="border">Cost</th>
                             <th className="border">Date</th>
-                            <th className="border">D. Status</th>
+                            <th className="border">Status</th>
                             <th className="border">Action</th>
                         </tr>
                     </thead>
@@ -72,32 +100,26 @@ const AssignRider = () => {
 
                                 <td className="border">{index + 1}</td>
 
-                                <td className="text-xs break-all border">
+                                <td className="border text-xs break-all">
                                     {parcel._id}
                                 </td>
 
-                                <td className='font-semibold border'>
+                                <td className="border font-semibold">
                                     {parcel.title}
                                 </td>
 
-                                <td className="border">
-                                    {parcel.type}
-                                </td>
+                                <td className="border">{parcel.type}</td>
 
-                                <td className="border">
-                                    {parcel.senderName}
-                                </td>
+                                <td className="border">{parcel.senderName}</td>
 
-                                <td className="border">
-                                    {parcel.receiverName}
-                                </td>
+                                <td className="border">{parcel.receiverName}</td>
 
-                                <td className="text-sm border">
+                                <td className="border text-sm">
                                     {parcel.senderDistrict} → {parcel.receiverDistrict}
                                 </td>
 
-                                <td className="font-bold text-green-600 border">
-                                    {parcel.delivery_cost} <span className='font-normal text-black'>BDT</span>
+                                <td className="border font-bold text-green-600">
+                                    {parcel.delivery_cost} BDT
                                 </td>
 
                                 <td className="border">
@@ -131,49 +153,75 @@ const AssignRider = () => {
                 )}
             </div>
 
-            {/* 🔥 MODAL */}
-            {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-xl w-[600px]">
+            {/* 🔥 DIALOG MODAL */}
+            <dialog ref={riderModalRef} className="modal modal-bottom sm:modal-middle">
 
-                        <h3 className="text-xl font-bold mb-4">
-                            Assign Rider ({selectedParcel?.senderDistrict})
-                        </h3>
+                <div className="modal-box">
 
-                        {riders.length === 0 ? (
-                            <p>No riders available in this district 🚫</p>
-                        ) : (
-                            <div className="space-y-3 max-h-[300px] overflow-y-auto">
-                                {riders.map(rider => (
-                                    <div
-                                        key={rider._id}
-                                        className="flex justify-between items-center border p-3 rounded"
-                                    >
-                                        <div>
-                                            <p className="font-semibold">{rider.name}</p>
-                                            <p className="text-sm">{rider.email}</p>
-                                        </div>
+                    {/* 🔥 Parcel Info */}
+                    <h3 className="font-bold text-lg mb-1">
+                        Assign Rider
+                    </h3>
 
-                                        <button className="btn btn-sm btn-success text-black">
-                                            Select
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                    <p className="text-sm mb-3">
+                        Parcel: <span className="font-semibold text-green-600">
+                            {selectedParcel?.title}
+                        </span>
+                    </p>
 
-                        <div className="mt-4 text-right">
-                            <button
-                                onClick={handleCloseModal}
-                                className="btn btn-sm btn-error text-white"
-                            >
-                                Close
-                            </button>
-                        </div>
+                    <p className="text-sm mb-4">
+                        District: {selectedParcel?.senderDistrict}
+                    </p>
 
+                    {/* 🔥 Riders Table */}
+                    <div className="overflow-x-auto">
+                        <table className="table table-zebra">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {riders.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="4" className="text-center">
+                                            No riders available for that district 🚫
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    riders.map((rider, i) => (
+                                        <tr key={rider._id}>
+                                            <th>{i + 1}</th>
+                                            <td>{rider.name}</td>
+                                            <td>{rider.email}</td>
+                                            <td>
+                                                <button
+                                                    onClick={() => handleAssignRider(rider)}
+                                                    className="btn btn-sm btn-primary text-black"
+                                                >
+                                                    Assign
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
                     </div>
+
+                    {/* 🔥 Close */}
+                    <div className="modal-action">
+                        <form method="dialog">
+                            <button className="btn">Close</button>
+                        </form>
+                    </div>
+
                 </div>
-            )}
+            </dialog>
         </div>
     );
 };
