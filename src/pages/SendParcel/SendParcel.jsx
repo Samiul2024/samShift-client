@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -17,6 +17,7 @@ const SendParcel = () => {
     const { register, handleSubmit, watch } = useForm();
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
     const [cost, setCost] = useState(0);
 
@@ -166,7 +167,6 @@ const SendParcel = () => {
                 if (res.data.insertedId) {
 
                     //TODO: redirect to a payment page 
-
                     Swal.fire({
                         icon: "success",
                         title: "Redirecting...",
@@ -174,6 +174,7 @@ const SendParcel = () => {
                         timer: 1500,
                         showConfirmButton: false,
                     });
+                    navigate('/dashboard/myParcels')
                 }
             })
         // save data to the server

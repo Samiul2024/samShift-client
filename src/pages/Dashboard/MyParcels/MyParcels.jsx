@@ -37,8 +37,23 @@ const MyParcels = () => {
 
     //  PAY (dummy for now)
     const handlePay = (parcel) => {
-        Swal.fire("Payment", `Proceed to pay ${parcel.delivery_cost} BDT`, "info");
-        navigate(`/dashboard/payment/${parcel}`);
+        Swal.fire({
+            title: "Proceed to Payment?",
+            html: `
+            <p><b>From:</b> ${parcel.senderName}</p>
+            <p><b>To:</b> ${parcel.receiverName}</p>
+            <p><b>Parcel:</b> ${parcel.title}</p>
+            <p><b>Amount:</b> ${parcel.delivery_cost} BDT</p>
+        `,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Pay Now",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigate(`/dashboard/payment/${parcel._id}`);
+            }
+        });
     };
 
     //  VIEW DETAILS
@@ -46,12 +61,14 @@ const MyParcels = () => {
         Swal.fire({
             title: "Parcel Details",
             html: `
-                <p><b>Title:</b> ${parcel.title}</p>
-                <p><b>Tracking ID:</b> ${parcel.tracking_id}</p>
-                <p><b>From:</b> ${parcel.senderDistrict}</p>
-                <p><b>To:</b> ${parcel.receiverDistrict}</p>
-                <p><b>Cost:</b> ${parcel.delivery_cost} BDT</p>
-            `,
+    <div style="text-align:left">
+        <p><b>Title:</b> ${parcel.title}</p>
+        <p><b>Tracking ID:</b> ${parcel.tracking_id}</p>
+        <p><b>From:</b> ${parcel.senderDistrict}</p>
+        <p><b>To:</b> ${parcel.receiverDistrict}</p>
+        <p><b>Cost:</b> ${parcel.delivery_cost ?? 'N/A'} BDT</p>
+    </div>
+`,
         });
     };
 
@@ -121,7 +138,7 @@ const MyParcels = () => {
 
                                     {parcel.payment_status === "unpaid" && (
                                         <button
-                                            onClick={() => handlePay(parcel._id)}
+                                            onClick={() => handlePay(parcel)}
                                             className="btn btn-xs btn-success"
                                         >
                                             Pay

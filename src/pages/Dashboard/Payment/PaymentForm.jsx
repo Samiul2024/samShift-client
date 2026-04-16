@@ -110,7 +110,7 @@ const PaymentForm = () => {
                             confirmButtonColor: "#16a34a",
                         });
 
-                        // navigate("/dashboard/myParcels");
+                        navigate("/dashboard/myParcels");
 
                         navigate(`/dashboard/payment/${res.data.insertedId}`, {
                             state: { tracking_id: parcelData.tracking_id }
