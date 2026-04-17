@@ -44,6 +44,7 @@ const DashboardLayout = () => {
                 </div>
                 <div className="mx-2 flex-1 px-2 lg:hidden">Dashboard</div>
                 {/* Page content here */}
+                <h1 className='text-4xl text-center p-4 bg-amber-200'>DashBoard</h1>
                 <Outlet></Outlet>
                 {/* Page content here */}
             </div>

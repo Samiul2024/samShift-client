@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
@@ -36,36 +36,44 @@ const AssignRider = () => {
         setSelectedParcel(parcel);
         riderModalRef.current.showModal();
     };
-
-    // 🔥 Assign Rider
-    const handleAssignRider = async (rider) => {
-        try {
-            await axiosSecure.patch(`/parcels/assign-rider/${selectedParcel._id}`, {
-                riderId: rider._id
+    const assignRiderMutation = useMutation({
+        mutationFn: async ({ parcelId, rider }) => {
+            const res = await axiosSecure.patch(`/parcels/assign-rider/${parcelId}`, {
+                riderId: rider._id,
+                riderEmail: rider.email,
+                riderName: rider.name,
+                tracking_id: selectedParcel.tracking_id
             });
-
+            return res.data;
+        },
+        onSuccess: (_, variables) => {
             Swal.fire({
                 icon: 'success',
                 title: 'Rider Assigned!',
                 html: `
-                    <b>${rider.name}</b> assigned to <br/>
-                    <span style="color:green;">${selectedParcel.title}</span>
-                `,
-                confirmButtonColor: "#16a34a"
+                <b>${variables.rider.name}</b> assigned to <br/>
+                <span style="color:green;">${selectedParcel.title}</span>
+            `
             });
 
             riderModalRef.current.close();
             setSelectedParcel(null);
-            refetch();
 
-        } catch (error) {
-            console.error(error);
+            refetch(); // refresh parcels
+        },
+        onError: () => {
             Swal.fire({
                 icon: 'error',
-                title: 'Assignment Failed',
-                text: 'Something went wrong!'
+                title: 'Assignment Failed'
             });
         }
+    });
+    // 🔥 Assign Rider
+    const handleAssignRider = (rider) => {
+        assignRiderMutation.mutate({
+            parcelId: selectedParcel._id,
+            rider
+        });
     };
 
     if (isLoading) {
@@ -89,8 +97,8 @@ const AssignRider = () => {
                             <th className="border">Route</th>
                             <th className="border">Cost</th>
                             <th className="border">Date</th>
-                            <th className="border">Status</th>
                             <th className="border">Action</th>
+                            <th className="border">Status</th>
                         </tr>
                     </thead>
 
@@ -125,13 +133,6 @@ const AssignRider = () => {
                                 <td className="border">
                                     {new Date(parcel.creation_date).toLocaleDateString()}
                                 </td>
-
-                                <td className="border">
-                                    <span className="badge py-6 badge-warning">
-                                        Not Collected
-                                    </span>
-                                </td>
-
                                 <td className="border">
                                     <button
                                         onClick={() => handleOpenModal(parcel)}
@@ -140,6 +141,13 @@ const AssignRider = () => {
                                         Assign Rider
                                     </button>
                                 </td>
+
+                                <td className="border">
+                                    <span className="badge py-6 badge-warning">
+                                        Not Collected
+                                    </span>
+                                </td>
+
 
                             </tr>
                         ))}
@@ -180,6 +188,7 @@ const AssignRider = () => {
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Phone</th>
                                     <th>Email</th>
                                     <th>Action</th>
                                 </tr>
@@ -197,6 +206,7 @@ const AssignRider = () => {
                                         <tr key={rider._id}>
                                             <th>{i + 1}</th>
                                             <td>{rider.name}</td>
+                                            <td>{rider.phone}</td>
                                             <td>{rider.email}</td>
                                             <td>
                                                 <button
