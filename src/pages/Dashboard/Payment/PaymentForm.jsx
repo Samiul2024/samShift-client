@@ -15,6 +15,7 @@ const PaymentForm = () => {
     console.log(parcelId);
 
     const [error, setError] = useState('');
+    const [isProcessing, setIsProcessing] = useState(false);
     const axiosSecure = useAxiosSecure();
 
     const { isPending, data: parcelInfo } = useQuery({
@@ -36,41 +37,41 @@ const PaymentForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!stripe || !elements) {
-            return;
-        }
-        const card = elements.getElement(CardElement);
 
-        if (!card) {
-            return;
-        }
+        if (!stripe || !elements) return;
 
-        //step-1: validate the card
+        setIsProcessing(true); // 🔥 START LOCK
 
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: 'card',
-            card
-        })
-        if (error) {
-            // console.log('error', error);
-            setError(error.message);
-        }
-        else {
+        try {
+            const card = elements.getElement(CardElement);
+            if (!card) return;
+
+            // STEP 1: Create payment method
+            const { error, paymentMethod } = await stripe.createPaymentMethod({
+                type: 'card',
+                card
+            });
+
+            if (error) {
+                setError(error.message);
+                setIsProcessing(false); // 🔥 UNLOCK
+                return;
+            }
+
             setError('');
-            console.log("payment method", paymentMethod);
 
-            // step-2: create payment intent
+            // STEP 2: Create payment intent
             const res = await axiosSecure.post('/create-payment-intent', {
                 amountInCents,
                 parcelId
-            })
+            });
 
             const clientSecret = res.data.clientSecret;
 
-            // step-3: confirm payment
+            // STEP 3: Confirm payment
             const result = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
-                    card: elements.getElement(CardElement),
+                    card,
                     billing_details: {
                         name: user.displayName,
                         email: user.email
@@ -80,51 +81,48 @@ const PaymentForm = () => {
 
             if (result.error) {
                 setError(result.error.message);
+                setIsProcessing(false); // 🔥 UNLOCK
+                return;
+            }
 
-            } else {
-                setError('');
-                if (result.paymentIntent.status === 'succeeded') {
-                    console.log('Payment succeeded!');
-                    // console.log(result);
-                    const transactionId = result.paymentIntent.id;
-                    // step-4: mark parcel paid also create payment history
-                    const paymentData = {
-                        parcelId,
-                        email: user.email,
-                        amount,
-                        transactionId: transactionId,
-                        paymentMethod: result.paymentIntent.payment_method_types
-                    }
+            // STEP 4: Success
+            if (result.paymentIntent.status === 'succeeded') {
 
-                    const paymentRes = await axiosSecure.post('/payments', paymentData);
-                    if (paymentRes.data.insertedId) {
+                const transactionId = result.paymentIntent.id;
 
-                        await Swal.fire({
-                            title: "Payment Successful 🎉",
-                            html: `
-            <p>Your parcel payment has been completed successfully.</p>
-            <p><strong>Transaction ID:</strong> ${transactionId}</p>
-        `,
-                            icon: "success",
-                            confirmButtonText: "Go to My Parcels",
-                            confirmButtonColor: "#16a34a",
-                        });
+                const paymentData = {
+                    parcelId,
+                    email: user.email,
+                    amount,
+                    transactionId,
+                    paymentMethod: result.paymentIntent.payment_method_types
+                };
 
-                        navigate("/dashboard/myParcels");
+                const paymentRes = await axiosSecure.post('/payments', paymentData);
 
-                        navigate(`/dashboard/payment/${res.data.insertedId}`, {
-                            state: { tracking_id: parcelData.tracking_id }
-                        });
-                    }
+                if (paymentRes.data.insertedId) {
 
+                    await Swal.fire({
+                        title: "Payment Successful 🎉",
+                        html: `
+                        <p>Your parcel payment has been completed successfully.</p>
+                        <p><strong>Transaction ID:</strong> ${transactionId}</p>
+                    `,
+                        icon: "success",
+                        confirmButtonText: "Go to My Parcels",
+                        confirmButtonColor: "#16a34a",
+                    });
+
+                    navigate("/dashboard/myParcels");
                 }
             }
+
+        } catch (err) {
+            console.error(err);
+            setError("Payment failed. Try again.");
+            setIsProcessing(false); // 🔥 UNLOCK
         }
-
-
-        // console.log('res from intent', res);
-
-    }
+    };
 
     return (
         <div>
@@ -132,11 +130,12 @@ const PaymentForm = () => {
                 <CardElement className="p-4 border rounded">
 
                 </CardElement>
-                <button type='submit'
-                    disabled={!stripe}
+                <button
+                    type='submit'
+                    disabled={!stripe || isProcessing}
                     className='text-black btn btn-primary w-full'
                 >
-                    Pay  ${amount}
+                    {isProcessing ? "Processing..." : `Pay $${amount}`}
                 </button>
                 {
                     error && <p className='text-red-500'>{error}</p>
