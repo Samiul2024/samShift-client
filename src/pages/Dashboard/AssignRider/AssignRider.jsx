@@ -37,12 +37,12 @@ const AssignRider = () => {
         riderModalRef.current.showModal();
     };
     const assignRiderMutation = useMutation({
-        mutationFn: async ({ parcelId, rider }) => {
-            const res = await axiosSecure.patch(`/parcels/assign-rider/${parcelId}`, {
+        mutationFn: async ({ parcel, rider }) => {
+            const res = await axiosSecure.patch(`/parcels/assign-rider/${parcel._id}`, {
                 riderId: rider._id,
                 riderEmail: rider.email,
                 riderName: rider.name,
-                tracking_id: selectedParcel.tracking_id
+                tracking_id: parcel.tracking_id
             });
             return res.data;
         },
@@ -71,7 +71,7 @@ const AssignRider = () => {
     // 🔥 Assign Rider
     const handleAssignRider = (rider) => {
         assignRiderMutation.mutate({
-            parcelId: selectedParcel._id,
+            parcel: selectedParcel,
             rider
         });
     };
@@ -210,10 +210,11 @@ const AssignRider = () => {
                                             <td>{rider.email}</td>
                                             <td>
                                                 <button
+                                                    disabled={assignRiderMutation.isPending}
                                                     onClick={() => handleAssignRider(rider)}
                                                     className="btn btn-sm btn-primary text-black"
                                                 >
-                                                    Assign
+                                                    {assignRiderMutation.isPending ? "Assigning..." : "Assign"}
                                                 </button>
                                             </td>
                                         </tr>
