@@ -13,6 +13,7 @@ import {
     HiOutlineClipboardList
 } from "react-icons/hi";
 import useUserRole from '../hooks/useUserRole';
+import { FaUserCheck } from 'react-icons/fa';
 
 const DashboardLayout = () => {
 
@@ -114,6 +115,12 @@ const DashboardLayout = () => {
                                 <NavLink to="/dashboard/makeAdmin" className="flex items-center gap-2">
                                     <HiOutlineShieldCheck className="text-lg" />
                                     Make Admin
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/dashboard/assignedRiders" className="flex items-center gap-2">
+                                    <FaUserCheck />
+                                    Assigned Riders
                                 </NavLink>
                             </li>
                         </>
