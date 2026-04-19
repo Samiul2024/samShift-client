@@ -24,3 +24,4 @@ const TrackSearch = () => {
     </form>
   );
 };
+export default TrackSearch;

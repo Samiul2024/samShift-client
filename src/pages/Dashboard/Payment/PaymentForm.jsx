@@ -95,7 +95,8 @@ const PaymentForm = () => {
                     email: user.email,
                     amount,
                     transactionId,
-                    paymentMethod: result.paymentIntent.payment_method_types
+                    paymentMethod: result.paymentIntent.payment_method_types,
+                    tracking_id: parcelInfo.tracking_id 
                 };
 
                 const paymentRes = await axiosSecure.post('/payments', paymentData);
