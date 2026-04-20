@@ -90,6 +90,16 @@ const DashboardLayout = () => {
                     </li>
 
                     {/* Riders link */}
+                    {!isLoading && role === "rider" && (
+                        <li>
+                            <NavLink to="/dashboard/rider-panel">
+                                🚚 Rider Panel
+                            </NavLink>
+                        </li>
+                    )}
+                    {/* RIDER ONLY LINKS ends  */}
+
+                    {/* admin links ends here*/}
                     {!isLoading && role === 'admin' &&
                         <>
                             <li>
@@ -110,7 +120,8 @@ const DashboardLayout = () => {
                                     Pending Riders
                                 </NavLink>
                             </li>
-                            {/* admin links */}
+
+
                             <li>
                                 <NavLink to="/dashboard/makeAdmin" className="flex items-center gap-2">
                                     <HiOutlineShieldCheck className="text-lg" />
@@ -123,6 +134,7 @@ const DashboardLayout = () => {
                                     Assigned Riders
                                 </NavLink>
                             </li>
+                            {/* admin links ends here*/}
                         </>
                     }
                 </ul>

@@ -30,6 +30,8 @@ import AdminRoute from "../routes/AdminRoute";
 import AssignRider from "../pages/Dashboard/AssignRider/AssignRider";
 import AssignedRiders from "../pages/Dashboard/AssignedRiders/AssignedRiders";
 import TrackAllParcels from "../pages/Dashboard/TrackParcel/TrackAllParcels";
+import RiderPanel from "../pages/Dashboard/AssignedRiders/RiderPanel";
+import RiderRoute from "../routes/RiderRoute";
 
 export const router = createBrowserRouter([
     {
@@ -161,6 +163,14 @@ export const router = createBrowserRouter([
                 element: <AdminRoute>
                     <AssignedRiders />
                 </AdminRoute>
+            },
+            {
+                path: "rider-panel",
+                element: (
+                    <RiderRoute>
+                        <RiderPanel />
+                    </RiderRoute>
+                )
             }
         ]
     }
