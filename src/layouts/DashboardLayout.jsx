@@ -1,145 +1,80 @@
-import React from 'react';
-import { NavLink, Outlet } from 'react-router';
-import ProFastLogo from '../pages/shared/ProFastLogo/ProFastLogo';
-import {
-    HiOutlineHome,
-    HiOutlineCube,
-    HiOutlineCreditCard,
-    HiOutlineTruck,
-    HiOutlineUser,
-    HiOutlineUserGroup,
-    HiOutlineClock,
-    HiOutlineShieldCheck,
-    HiOutlineClipboardList
-} from "react-icons/hi";
-import useUserRole from '../hooks/useUserRole';
-import { FaUserCheck } from 'react-icons/fa';
+import { NavLink, Outlet } from "react-router";
+import { sidebarConfig } from "../config/sidebarConfig";
+import useUserRole from "../hooks/useUserRole";
+import { HiOutlineMenu } from "react-icons/hi";
 
 const DashboardLayout = () => {
-
     const { role, isLoading } = useUserRole();
-    console.log(role);
+
+    if (isLoading) {
+        return <span className="loading loading-spinner loading-lg"></span>;
+    }
 
     return (
-
         <div className="drawer lg:drawer-open">
-            <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+            <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
+
+            {/* 🔥 MAIN CONTENT */}
             <div className="drawer-content flex flex-col">
-                <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
-                <div className="flex-none lg:hidden">
-                    <label htmlFor="my-drawer-3" aria-label="open sidebar" className="btn btn-square btn-ghost">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            className="inline-block h-6 w-6 stroke-current"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 6h16M4 12h16M4 18h16"
-                            ></path>
-                        </svg>
+
+                {/* 🔥 TOP NAVBAR (MOBILE ONLY) */}
+                <div className="w-full navbar bg-base-200 lg:hidden">
+                    <label
+                        htmlFor="dashboard-drawer"
+                        className="btn btn-square btn-ghost"
+                    >
+                        <HiOutlineMenu className="text-xl" />
                     </label>
+                    <h2 className="text-lg font-bold ml-2">Dashboard</h2>
                 </div>
-                <div className="mx-2 flex-1 px-2 lg:hidden">Dashboard</div>
-                {/* Page content here */}
-                <h1 className='text-4xl text-center p-4 bg-amber-200'>DashBoard</h1>
-                <Outlet></Outlet>
-                {/* Page content here */}
+
+                {/* 🔥 PAGE CONTENT */}
+                <div className="p-4 lg:p-6">
+                    <h1 className="text-2xl lg:text-4xl text-center p-3 lg:p-4 bg-amber-200 rounded-lg mb-4">
+                        Dashboard
+                    </h1>
+
+                    <Outlet />
+                </div>
             </div>
-            <div className="drawer-side">
-                <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
-                <ul className="menu bg-base-200 min-h-full w-80 p-4">
-                    {/* Sidebar content here */}
-                    <ProFastLogo></ProFastLogo>
-                    <li>
-                        <NavLink to="/" className="flex items-center gap-2">
-                            <HiOutlineHome className="text-lg" />
-                            Home
-                        </NavLink>
-                    </li>
 
-                    <li>
-                        <NavLink to="/dashboard/myParcels" className="flex items-center gap-2">
-                            <HiOutlineCube className="text-lg" />
-                            My Parcels
-                        </NavLink>
-                    </li>
+            {/* 🔥 SIDEBAR */}
+            <div className="drawer-side z-40">
+                <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
 
-                    <li>
-                        <NavLink to="/dashboard/paymentHistory" className="flex items-center gap-2">
-                            <HiOutlineCreditCard className="text-lg" />
-                            Payment History
-                        </NavLink>
-                    </li>
+                <ul className="menu bg-base-200 min-h-full w-72 p-4 space-y-1">
 
-                    <li>
-                        <NavLink to="/dashboard/track" className="flex items-center gap-2">
-                            <HiOutlineTruck className="text-lg" />
-                            Track a Package
-                        </NavLink>
-                    </li>
+                    {/* 🔥 LOGO / TITLE */}
+                    <div className="mb-4 text-xl font-bold text-center">
+                        🚚 SamShift
+                    </div>
 
-                    <li>
-                        <NavLink to="/dashboard/profile" className="flex items-center gap-2">
-                            <HiOutlineUser className="text-lg" />
-                            Update Profile
-                        </NavLink>
-                    </li>
+                    {sidebarConfig
+                        .filter(item => item.roles.includes(role))
+                        .map((item, index) => {
+                            const Icon = item.icon;
 
-                    {/* Riders link */}
-                    {!isLoading && role === "rider" && (
-                        <li>
-                            <NavLink to="/dashboard/rider-panel">
-                                🚚 Rider Panel
-                            </NavLink>
-                        </li>
-                    )}
-                    {/* RIDER ONLY LINKS ends  */}
-
-                    {/* admin links ends here*/}
-                    {!isLoading && role === 'admin' &&
-                        <>
-                            <li>
-                                <NavLink to="/dashboard/activeRiders" className="flex items-center gap-2">
-                                    <HiOutlineUserGroup className="text-lg" />
-                                    Active Riders
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/dashboard/assign-rider" className="flex items-center gap-2">
-                                    <HiOutlineClipboardList className="text-lg" />
-                                    Assign Rider
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/dashboard/pendingRiders" className="flex items-center gap-2">
-                                    <HiOutlineClock className="text-lg" />
-                                    Pending Riders
-                                </NavLink>
-                            </li>
-
-
-                            <li>
-                                <NavLink to="/dashboard/makeAdmin" className="flex items-center gap-2">
-                                    <HiOutlineShieldCheck className="text-lg" />
-                                    Make Admin
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/dashboard/assignedRiders" className="flex items-center gap-2">
-                                    <FaUserCheck />
-                                    Assigned Riders
-                                </NavLink>
-                            </li>
-                            {/* admin links ends here*/}
-                        </>
-                    }
+                            return (
+                                <li key={index}>
+                                    <NavLink
+                                        onClick={() => {
+                                            document.getElementById("dashboard-drawer").checked = false;
+                                        }}
+                                        to={item.path}
+                                        className={({ isActive }) =>
+                                            `flex items-center gap-3 ${isActive ? "bg-primary text-white" : ""
+                                            }`
+                                        }
+                                    >
+                                        <Icon className="text-lg" />
+                                        {item.label}
+                                    </NavLink>
+                                </li>
+                            );
+                        })}
                 </ul>
             </div>
-        </div >
+        </div>
     );
 };
 
