@@ -37,12 +37,12 @@ export const sidebarConfig = [
     icon: HiOutlineTruck,
     roles: ["user", "admin", "rider"]
   },
-  {
-    label: "Profile",
-    path: "/dashboard/profile",
-    icon: HiOutlineUser,
-    roles: ["user", "admin", "rider"]
-  },
+//   {
+//     label: "Profile",
+//     path: "/dashboard/profile",
+//     icon: HiOutlineUser,
+//     roles: ["user", "admin", "rider"]
+//   },
 
   // 🛠 ADMIN ONLY
   {

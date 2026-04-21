@@ -8,7 +8,7 @@ const RiderPanel = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  // 🔥 Get assigned parcels
+  //  GET ASSIGNED PARCELS
   const { data: parcels = [], isLoading, refetch } = useQuery({
     queryKey: ["riderParcels", user?.email],
     enabled: !!user?.email,
@@ -20,7 +20,19 @@ const RiderPanel = () => {
     },
   });
 
-  // 🔥 Update status mutation
+  //  ACCEPT DELIVERY
+  const acceptMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch(`/parcels/rider-accept/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      Swal.fire("Accepted!", "Delivery accepted", "success");
+      refetch();
+    },
+  });
+
+  //  UPDATE STATUS
   const updateStatusMutation = useMutation({
     mutationFn: async ({ id, status, tracking_id }) => {
       const res = await axiosSecure.patch(
@@ -35,6 +47,11 @@ const RiderPanel = () => {
     },
   });
 
+  //  HANDLERS
+  const handleAccept = (parcel) => {
+    acceptMutation.mutate(parcel._id);
+  };
+
   const handleUpdate = (parcel, status) => {
     updateStatusMutation.mutate({
       id: parcel._id,
@@ -43,7 +60,7 @@ const RiderPanel = () => {
     });
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="p-6">Loading...</p>;
 
   return (
     <div className="p-6">
@@ -60,6 +77,7 @@ const RiderPanel = () => {
                 <th>Parcel</th>
                 <th>Route</th>
                 <th>Status</th>
+                <th>Rider Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -76,38 +94,59 @@ const RiderPanel = () => {
                   </td>
 
                   <td>
-                    <span className="badge">
+                    <span className="badge badge-outline">
                       {parcel.delivery_status}
                     </span>
                   </td>
 
+                  <td>
+                    <span className="badge badge-info">
+                      {parcel.rider_status || "pending"}
+                    </span>
+                  </td>
+
                   <td className="space-x-2">
-                    <button
-                      onClick={() =>
-                        handleUpdate(parcel, "picked-up")
-                      }
-                      className="btn btn-xs btn-info"
-                    >
-                      Picked
-                    </button>
+                    {/*  ACCEPT BUTTON */}
+                    {parcel.rider_status !== "accepted" && (
+                      <button
+                        onClick={() => handleAccept(parcel)}
+                        className="btn btn-xs btn-primary"
+                      >
+                        Accept
+                      </button>
+                    )}
 
-                    <button
-                      onClick={() =>
-                        handleUpdate(parcel, "in-transit")
-                      }
-                      className="btn btn-xs btn-warning"
-                    >
-                      Transit
-                    </button>
+                    {/*  AFTER ACCEPT */}
+                    {parcel.rider_status === "accepted" && (
+                      <>
+                        <button
+                          onClick={() =>
+                            handleUpdate(parcel, "picked-up")
+                          }
+                          className="btn btn-xs btn-info"
+                        >
+                          Picked
+                        </button>
 
-                    <button
-                      onClick={() =>
-                        handleUpdate(parcel, "delivered")
-                      }
-                      className="btn btn-xs btn-success"
-                    >
-                      Delivered
-                    </button>
+                        <button
+                          onClick={() =>
+                            handleUpdate(parcel, "in-transit")
+                          }
+                          className="btn btn-xs btn-warning"
+                        >
+                          Transit
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            handleUpdate(parcel, "delivered")
+                          }
+                          className="btn btn-xs btn-success"
+                        >
+                          Delivered
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}
