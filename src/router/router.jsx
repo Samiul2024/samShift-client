@@ -32,6 +32,7 @@ import AssignedRiders from "../pages/Dashboard/AssignedRiders/AssignedRiders";
 import TrackAllParcels from "../pages/Dashboard/TrackParcel/TrackAllParcels";
 import RiderPanel from "../pages/Dashboard/AssignedRiders/RiderPanel";
 import RiderRoute from "../routes/RiderRoute";
+import RiderEarnings from "../pages/Dashboard/AssignedRiders/RiderEarnings";
 
 export const router = createBrowserRouter([
     {
@@ -169,6 +170,14 @@ export const router = createBrowserRouter([
                 element: (
                     <RiderRoute>
                         <RiderPanel />
+                    </RiderRoute>
+                )
+            },
+            {
+                path: "rider-earnings",
+                element: (
+                    <RiderRoute>
+                        <RiderEarnings />
                     </RiderRoute>
                 )
             }
