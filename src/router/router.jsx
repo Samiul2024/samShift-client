@@ -33,6 +33,7 @@ import TrackAllParcels from "../pages/Dashboard/TrackParcel/TrackAllParcels";
 import RiderPanel from "../pages/Dashboard/AssignedRiders/RiderPanel";
 import RiderRoute from "../routes/RiderRoute";
 import RiderEarnings from "../pages/Dashboard/AssignedRiders/RiderEarnings";
+import RiderDashboard from "../pages/Dashboard/RiderDashboard/RiderDashboard";
 
 export const router = createBrowserRouter([
     {
@@ -178,6 +179,14 @@ export const router = createBrowserRouter([
                 element: (
                     <RiderRoute>
                         <RiderEarnings />
+                    </RiderRoute>
+                )
+            },
+            {
+                path: "rider-dashboard",
+                element: (
+                    <RiderRoute>
+                        <RiderDashboard />
                     </RiderRoute>
                 )
             }

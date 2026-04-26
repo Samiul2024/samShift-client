@@ -89,5 +89,11 @@ export const sidebarConfig = [
         path: "/dashboard/rider-earnings",
         icon: HiOutlineCreditCard,
         roles: ["rider"]
+    },
+    {
+        label: "Rider Dashboard",
+        path: "/dashboard/rider-dashboard",
+        icon: HiOutlineHome,
+        roles: ["rider"]
     }
 ];
