@@ -34,6 +34,7 @@ import RiderPanel from "../pages/Dashboard/AssignedRiders/RiderPanel";
 import RiderRoute from "../routes/RiderRoute";
 import RiderEarnings from "../pages/Dashboard/AssignedRiders/RiderEarnings";
 import RiderDashboard from "../pages/Dashboard/RiderDashboard/RiderDashboard";
+import AdminAnalytics from "../pages/Dashboard/Admin/AdminAnalytics";
 
 export const router = createBrowserRouter([
     {
@@ -165,6 +166,14 @@ export const router = createBrowserRouter([
                 element: <AdminRoute>
                     <AssignedRiders />
                 </AdminRoute>
+            },
+            {
+                path: "admin-analytics",
+                element: (
+                    <AdminRoute>
+                        <AdminAnalytics />
+                    </AdminRoute>
+                )
             },
             {
                 path: "rider-panel",

@@ -7,7 +7,8 @@ import {
     HiOutlineUserGroup,
     HiOutlineClock,
     HiOutlineShieldCheck,
-    HiOutlineClipboardList
+    HiOutlineClipboardList,
+    HiOutlineChartBar
 } from "react-icons/hi";
 import { FaUserCheck } from "react-icons/fa";
 import { icon } from "leaflet";
@@ -74,6 +75,12 @@ export const sidebarConfig = [
         label: "Assigned Riders",
         path: "/dashboard/assignedRiders",
         icon: FaUserCheck,
+        roles: ["admin"]
+    },
+    {
+        label: "Analytics",
+        path: "/dashboard/admin-analytics",
+        icon: HiOutlineChartBar,
         roles: ["admin"]
     },
 
