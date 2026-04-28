@@ -102,5 +102,20 @@ export const sidebarConfig = [
         path: "/dashboard/rider-dashboard",
         icon: HiOutlineHome,
         roles: ["rider"]
+    },
+    {
+        label: "Withdraw",
+        path: "/dashboard/withdraw",
+        roles: ["rider"]
+    },
+    {
+        label: "Withdraw History",
+        path: "/dashboard/withdraw-history",
+        roles: ["rider"]
+    },
+    {
+        label: "Withdraw Requests",
+        path: "/dashboard/admin-withdraw",
+        roles: ["admin"]
     }
 ];

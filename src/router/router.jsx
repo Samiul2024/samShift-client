@@ -35,6 +35,9 @@ import RiderRoute from "../routes/RiderRoute";
 import RiderEarnings from "../pages/Dashboard/AssignedRiders/RiderEarnings";
 import RiderDashboard from "../pages/Dashboard/RiderDashboard/RiderDashboard";
 import AdminAnalytics from "../pages/Dashboard/Admin/AdminAnalytics";
+import WithdrawRequest from "../pages/Dashboard/Withdraw/WithdrawRequest";
+import WithdrawHistory from "../pages/Dashboard/Withdraw/WithdrawHistory";
+import AdminWithdraw from "../pages/Dashboard/Withdraw/AdminWithdraw";
 
 export const router = createBrowserRouter([
     {
@@ -198,6 +201,18 @@ export const router = createBrowserRouter([
                         <RiderDashboard />
                     </RiderRoute>
                 )
+            },
+            {
+                path: "withdraw",
+                element: <RiderRoute><WithdrawRequest /></RiderRoute>
+            },
+            {
+                path: "withdraw-history",
+                element: <RiderRoute><WithdrawHistory /></RiderRoute>
+            },
+            {
+                path: "admin-withdraw",
+                element: <AdminRoute><AdminWithdraw /></AdminRoute>
             }
         ]
     }
