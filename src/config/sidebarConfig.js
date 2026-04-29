@@ -106,16 +106,19 @@ export const sidebarConfig = [
     {
         label: "Withdraw",
         path: "/dashboard/withdraw",
+        icon: HiOutlineHome,
         roles: ["rider"]
     },
     {
         label: "Withdraw History",
         path: "/dashboard/withdraw-history",
+        icon: HiOutlineHome,
         roles: ["rider"]
     },
     {
         label: "Withdraw Requests",
         path: "/dashboard/admin-withdraw",
+        icon: HiOutlineHome,
         roles: ["admin"]
     }
 ];

@@ -204,15 +204,23 @@ export const router = createBrowserRouter([
             },
             {
                 path: "withdraw",
-                element: <RiderRoute><WithdrawRequest /></RiderRoute>
+                element: (
+                    <RiderRoute>
+                        <WithdrawRequest />
+                    </RiderRoute>
+                )
             },
             {
                 path: "withdraw-history",
-                element: <RiderRoute><WithdrawHistory /></RiderRoute>
+                element: (
+                    <RiderRoute><WithdrawHistory /></RiderRoute>
+                )
             },
             {
                 path: "admin-withdraw",
-                element: <AdminRoute><AdminWithdraw /></AdminRoute>
+                element: (
+                    <AdminRoute><AdminWithdraw /></AdminRoute>
+                )
             }
         ]
     }
