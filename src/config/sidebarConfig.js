@@ -10,7 +10,8 @@ import {
     HiOutlineClipboardList,
     HiOutlineChartBar,
     HiOutlineXCircle,
-    HiCurrencyBangladeshi
+    HiCurrencyBangladeshi,
+    HiOutlinePresentationChartBar
 } from "react-icons/hi";
 import { FaUserCheck } from "react-icons/fa";
 import { icon } from "leaflet";
@@ -127,6 +128,12 @@ export const sidebarConfig = [
         label: "Failed Parcels",
         path: "/dashboard/failed-parcels",
         icon: HiOutlineXCircle,
+        roles: ["admin"]
+    },
+    {
+        label: "Operations",
+        path: "/dashboard/operations",
+        icon: HiOutlinePresentationChartBar,
         roles: ["admin"]
     }
 ];
