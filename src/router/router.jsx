@@ -38,6 +38,7 @@ import AdminAnalytics from "../pages/Dashboard/Admin/AdminAnalytics";
 import WithdrawRequest from "../pages/Dashboard/Withdraw/WithdrawRequest";
 import WithdrawHistory from "../pages/Dashboard/Withdraw/WithdrawHistory";
 import AdminWithdraw from "../pages/Dashboard/Withdraw/AdminWithdraw";
+import FailedParcels from "../pages/Dashboard/Admin/FailedParcels";
 
 export const router = createBrowserRouter([
     {
@@ -221,6 +222,12 @@ export const router = createBrowserRouter([
                 element: (
                     <AdminRoute><AdminWithdraw /></AdminRoute>
                 )
+            },
+            {
+                path: "failed-parcels",
+                element: <AdminRoute>
+                    <FailedParcels />
+                </AdminRoute>
             }
         ]
     }

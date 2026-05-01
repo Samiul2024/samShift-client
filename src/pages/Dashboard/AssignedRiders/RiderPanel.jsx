@@ -42,11 +42,16 @@ const RiderPanel = () => {
 
     //  UPDATE STATUS
     const updateStatusMutation = useMutation({
-        mutationFn: async ({ id, status }) => {
+        mutationFn: async ({ id, status, fail_reason }) => {
+
             const res = await axiosSecure.patch(
                 `/parcels/update-status/${id}`,
-                { status }
+                {
+                    status,
+                    fail_reason
+                }
             );
+
             return res.data;
         },
         onSuccess: () => {
@@ -63,7 +68,31 @@ const RiderPanel = () => {
         acceptMutation.mutate(parcel._id);
     };
 
-    const handleUpdate = (parcel, status) => {
+    const handleUpdate = async (parcel, status) => {
+
+        // ❌ FAILED DELIVERY
+        if (status === "failed") {
+
+            const result = await Swal.fire({
+                title: "Delivery Failed",
+                input: "text",
+                inputLabel: "Failure Reason",
+                inputPlaceholder: "Customer unavailable / Wrong address",
+                showCancelButton: true,
+            });
+
+            if (!result.isConfirmed) return;
+
+            updateStatusMutation.mutate({
+                id: parcel._id,
+                status,
+                fail_reason: result.value,
+            });
+
+            return;
+        }
+
+        // ✅ NORMAL UPDATE
         updateStatusMutation.mutate({
             id: parcel._id,
             status,

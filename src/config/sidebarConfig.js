@@ -8,7 +8,9 @@ import {
     HiOutlineClock,
     HiOutlineShieldCheck,
     HiOutlineClipboardList,
-    HiOutlineChartBar
+    HiOutlineChartBar,
+    HiOutlineXCircle,
+    HiCurrencyBangladeshi
 } from "react-icons/hi";
 import { FaUserCheck } from "react-icons/fa";
 import { icon } from "leaflet";
@@ -118,7 +120,13 @@ export const sidebarConfig = [
     {
         label: "Withdraw Requests",
         path: "/dashboard/admin-withdraw",
-        icon: HiOutlineHome,
+        icon: HiCurrencyBangladeshi,
+        roles: ["admin"]
+    },
+    {
+        label: "Failed Parcels",
+        path: "/dashboard/failed-parcels",
+        icon: HiOutlineXCircle,
         roles: ["admin"]
     }
 ];
