@@ -108,11 +108,11 @@ export const router = createBrowserRouter([
                 Component: ForgotPassword
             },
             {
-                path: '/verify-code',
+                path: 'verify-code',
                 Component: VerifyCode
             },
             {
-                path: "/reset-password",
+                path: "reset-password",
                 Component: ResetPassword
             }
         ]
