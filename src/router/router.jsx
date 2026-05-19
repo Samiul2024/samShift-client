@@ -92,31 +92,31 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: '/',
-        Component: AuthLayout,
-        children: [
-            {
-                path: 'login',
-                element: <Login />
-            },
-            {
-                path: 'register',
-                Component: Register
-            },
-            {
-                path: 'forgot-password',
-                Component: ForgotPassword
-            },
-            {
-                path: 'verify-code',
-                Component: VerifyCode
-            },
-            {
-                path: "reset-password",
-                Component: ResetPassword
-            }
-        ]
-    },
+    path: '/',
+    element: <AuthLayout />,
+    children: [
+        {
+            path: 'login',
+            element: <Login />
+        },
+        {
+            path: 'register',
+            element: <Register />
+        },
+        {
+            path: 'forgot-password',
+            element: <ForgotPassword />
+        },
+        {
+            path: 'verify-code',
+            element: <VerifyCode />
+        },
+        {
+            path: 'reset-password',
+            element: <ResetPassword />
+        }
+    ]
+},
     {
         path: '/dashboard',
         element: <PrivateRoute>
