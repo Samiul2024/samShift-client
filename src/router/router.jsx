@@ -97,7 +97,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: 'login',
-                Component: Login
+                element: <Login />
             },
             {
                 path: 'register',
