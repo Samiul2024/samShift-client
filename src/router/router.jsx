@@ -15,7 +15,7 @@ import TrackConsignment from "../components/TrackConsignment";
 import ErrorPage from "../components/ErrorPage";
 import ForgotPassword from "../pages/Authentication/ForgotPassword/ForgotPassword";
 import VerifyCode from "../pages/Authentication/ForgotPassword/VerifyCode";
-import ResetPassword from "../pages/Authentication/ForgotPassword/ResetPassword";
+// import ResetPassword from "../pages/Authentication/ForgotPassword/ResetPassword";
 import DashboardLayout from "../layouts/DashboardLayout";
 import MyParcels from "../pages/Dashboard/MyParcels/MyParcels";
 import Payment from "../pages/Dashboard/Payment/Payment";
@@ -109,10 +109,10 @@ export const router = createBrowserRouter([
                 path: '/verify-code',
                 Component: VerifyCode
             },
-            {
-                path: "/reset-password",
-                Component: ResetPassword
-            }
+            // {
+            //     path: "/reset-password",
+            //     Component: ResetPassword
+            // }
         ]
     },
     {
