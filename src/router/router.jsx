@@ -40,6 +40,8 @@ import WithdrawHistory from "../pages/Dashboard/Withdraw/WithdrawHistory";
 import AdminWithdraw from "../pages/Dashboard/Withdraw/AdminWithdraw";
 import FailedParcels from "../pages/Dashboard/Admin/FailedParcels";
 import OperationsDashboard from "../pages/Dashboard/Admin/OperationsDashboard";
+import ResetPassword from "../pages/Authentication/ForgotPassword/ResetPassword";
+import Login from "../pages/Authentication/Login/Login";
 
 export const router = createBrowserRouter([
     {
@@ -93,10 +95,10 @@ export const router = createBrowserRouter([
         path: '/',
         Component: AuthLayout,
         children: [
-            // {
-            //     path: 'login',
-            //     Component: Login
-            // },
+            {
+                path: 'login',
+                Component: Login
+            },
             {
                 path: 'register',
                 Component: Register
@@ -109,10 +111,10 @@ export const router = createBrowserRouter([
                 path: '/verify-code',
                 Component: VerifyCode
             },
-            // {
-            //     path: "/reset-password",
-            //     Component: ResetPassword
-            // }
+            {
+                path: "/reset-password",
+                Component: ResetPassword
+            }
         ]
     },
     {
