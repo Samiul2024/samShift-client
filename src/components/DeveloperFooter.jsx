@@ -6,6 +6,7 @@ const DeveloperFooter = () => {
 
         <footer
             className="
+            fixed bottom-0
       w-full
       border-t
       border-slate-800
@@ -17,7 +18,7 @@ const DeveloperFooter = () => {
 
             <div
                 className="
-        max-w-7xl
+         max-w-7xl
         mx-auto
         px-6
         flex
