@@ -12,19 +12,25 @@ import TopAgents from '../../components/TopAgents';
 
 const Home = () => {
     return (
-        <div>
-            <Banner></Banner>
-            <HowItWorks />
-            <ServicesSection></ServicesSection>
-            <BrandSlider />
-            <Benefits />
-            <BeMerchant />
-            <Testimonials />
-            <Faq />
-            <HowEarningWorks />
-            <TopAgents />
+        <>
+            <SEO
+                title="SamShift - Fast Parcel Delivery in Bangladesh"
+                description="Send and track parcels easily with SamShift. Reliable delivery system."
+            />
+            <div>
+                <Banner></Banner>
+                <HowItWorks />
+                <ServicesSection></ServicesSection>
+                <BrandSlider />
+                <Benefits />
+                <BeMerchant />
+                <Testimonials />
+                <Faq />
+                <HowEarningWorks />
+                <TopAgents />
 
-        </div>
+            </div>
+        </>
     );
 };
 
