@@ -1,35 +1,32 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-// import {
-//   RouterProvider,
-// } from "react-router";
-import { RouterProvider } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
-import { router } from './router/router.jsx';
-import 'aos/dist/aos.css';
-import AOS from 'aos';
-import AuthProvider from './contexts/AuthContext/AuthProvider.jsx';
-import 'leaflet/dist/leaflet.css';
-import { Toaster } from 'react-hot-toast';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+const SEO = ({
+  title = "SamShift - Parcel Delivery System",
+  description = "Send parcels, track deliveries, manage riders with SamShift.",
+  keywords = "parcel delivery Bangladesh, courier service, logistics system",
+  url = "https://your-domain.vercel.app",
+}) => {
+  return (
+    <Helmet>
+      <title>{title}</title>
 
-AOS.init();
+      <meta name="description" content={description} />
+      <meta name="keywords" content={keywords} />
+      <meta name="author" content="Md. Samiulla Hossen" />
 
-const queryClient = new QueryClient();
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <div className='font-urbanist max-w-7xl mx-auto'>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Toaster position="top-right" reverseOrder={false} />
+      {/* Open Graph */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={url} />
+      <meta property="og:type" content="website" />
 
-          <RouterProvider router={router}
-            fallbackElement={<p>Loading...</p>}
-          />
-        </AuthProvider>
-      </QueryClientProvider>
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
 
-    </div>
-  </StrictMode>,
-)
+      {/* Canonical */}
+      <link rel="canonical" href={url} />
+    </Helmet>
+  );
+};
+
+export default SEO;

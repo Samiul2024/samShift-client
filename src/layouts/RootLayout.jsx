@@ -6,10 +6,14 @@ import DeveloperFooter from '../components/DeveloperFooter';
 
 const RootLayout = () => {
     return (
-        <div>
-            <Navbar></Navbar>
-            <Outlet></Outlet>
-            <Footer></Footer>
+        <div className="min-h-screen flex flex-col">
+            <Navbar />
+
+            <main className="flex-1">
+                <Outlet />
+            </main>
+
+            <Footer />
             <DeveloperFooter />
         </div>
     );

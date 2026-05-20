@@ -9,6 +9,7 @@ import HowItWorks from '../../components/HowItWorks';
 import Testimonials from '../../components/Testimonials';
 import HowEarningWorks from '../../components/HowEarningWorks';
 import TopAgents from '../../components/TopAgents';
+import SEO from '../../components/SEO';
 
 const Home = () => {
     return (
