@@ -4,7 +4,7 @@ import useAuth from './useAuth';
 import { useNavigate } from 'react-router';
 
 const axiosSecure = axios.create({
-    baseURL: `https://sam-shift-server.vercel.app`
+    baseURL: `https://samshift-server.onrender.com`
 })
 
 const useAxiosSecure = () => {
