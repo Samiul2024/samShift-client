@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SocialLogin from '../SocialLogin/SocialLogin';
@@ -14,6 +14,7 @@ const Login = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const from = location.state?.from || '/';
+    const [loginError, setLoginError] = useState('');
     // console.log(location);
 
     const onSubmit = data => {
@@ -22,8 +23,13 @@ const Login = () => {
             .then(result => {
                 console.log(result.user);
                 navigate(from);
-            })
-            .catch(error => console.log(error))
+            }).catch(error => {
+                if (error.code === 'auth/invalid-credential') {
+                    setLoginError('Invalid email or password.');
+                } else {
+                    setLoginError('Login failed. Please try again.');
+                }
+            });
     }
 
     return (
@@ -60,6 +66,13 @@ const Login = () => {
                                 Forgot password?
                             </Link>
                         </div>
+                        {
+                            loginError && (
+                                <p className="text-red-500 mt-2">
+                                    {loginError}
+                                </p>
+                            )
+                        }
                         <button className="btn btn-primary  text-black mt-4">Login</button>
                     </fieldset>
                     <p><small>New to this website?
