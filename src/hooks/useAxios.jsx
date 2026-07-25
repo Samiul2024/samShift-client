@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: `https://samshift-server.onrender.com`
+    baseURL: `https://samshift-server-ukum.onrender.com`
 })
 const useAxios = () => {
     return axiosInstance;
